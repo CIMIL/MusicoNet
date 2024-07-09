@@ -1,0 +1,36 @@
+scheme: http
+keycloak-port: 8082
+#keycloak-issuer: ${scheme}://192.168.188.28:${keycloak-port}/realms/musico-realm
+keycloak-issuer: ${scheme}://204.216.223.231:${keycloak-port}/realms/musico-realm
+
+keycloak-secret: 3jJsESTUGGpveMJ08CfoCqUQNCctiiBP
+server:
+  ssl:
+    enabled: false
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+        - TokenRelay=
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${keycloak-issuer}/protocol/openid-connect/certs
+      client:
+        provider:
+          keycloak:
+            token-uri: ${keycloak-issuer}/protocol/openid-connect/token
+            authorization-uri: ${keycloak-issuer}/protocol/openid-connect/auth
+            user-name-attribute: preferred_username
+            issuer-uri: ${keycloak-issuer}
+        registration:
+          keycloak-confidential-user:
+            authorization-grant-type: authorization_code
+            client-name: musico-gateway
+            client-id: musico-gateway
+            client-authentication-method: none
+            provider: keycloak
+            scope: openid,profile,email,offline_access

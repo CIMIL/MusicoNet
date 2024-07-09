@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/data/mongo https://www.springframework.org/schema/data/mongo/spring-mongo.xsd">
+    <bean id="gridFsTemplate" class="org.springframework.data.mongodb.gridfs.GridFsTemplate">
+        <constructor-arg ref="mongoDbFactory" />
+        <constructor-arg ref="mongoConverter" />
+    </bean>
+    <mongo:mongo-client id="mongoClient" host="localhost" />
+    <mongo:db-factory id="mongoDbFactory" dbname="musico" mongo-client-ref="mongoClient" />
+    <mongo:mapping-converter id="mongoConverter" base-package="musico.services.user.models">
+        <mongo:custom-converters base-package="musico.services.user"/>
+    </mongo:mapping-converter>
+</beans>

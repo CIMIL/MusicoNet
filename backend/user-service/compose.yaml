@@ -1,0 +1,6 @@
+services:
+  auth-service:
+    image: musico-microservices:auth-latest
+    ports:
+      - 80:80
+

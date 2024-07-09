@@ -1,0 +1,1780 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/"
+     xml:base="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/"
+     xmlns:cc="http://web.resource.org/cc/"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:mo="http://purl.org/ontology/mo/"
+     xmlns:ns="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+     xmlns:obo="http://purl.obolibrary.org/obo/"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:smi="http://purl.org/ontology/iomust/smi#"
+     xmlns:wot="http://xmlns.com/wot/0.1/"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:core="http://purl.org/ontology/ao/core#"
+     xmlns:dcam="http://purl.org/dc/dcam/"
+     xmlns:foaf="http://xmlns.com/foaf/0.1/"
+     xmlns:obda="https://w3id.org/obda/vocabulary#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+     xmlns:time="http://www.w3.org/2006/time#"
+     xmlns:vann="http://purl.org/vocab/vann/"
+     xmlns:terms="http://purl.org/dc/terms/"
+     xmlns:musico="http://purl.org/ontology/musico/"
+     xmlns:schema="https://schema.org/"
+     xmlns:musicoo="http://purl.org/ontology/musico#"
+     xmlns:protege="http://protege.stanford.edu/plugins/owl/protege#"
+     xmlns:schema1="http://schema.org/"
+     xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#"
+     xmlns:ace_lexicon="http://attempto.ifi.uzh.ch/ace_lexicon#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco">
+        <owl:imports rdf:resource="http://purl.obolibrary.org/obo/MFOEM.owl"/>
+        <owl:imports rdf:resource="http://purl.org/NET/c4dm/event.owl"/>
+        <owl:imports rdf:resource="http://purl.org/NET/c4dm/timeline.owl"/>
+        <owl:imports rdf:resource="http://purl.org/ontology/iomust/smi"/>
+        <owl:imports rdf:resource="http://purl.org/ontology/mo/"/>
+        <owl:imports rdf:resource="http://purl.org/ontology/musico/0.1"/>
+        <owl:imports rdf:resource="http://purl.org/ontology/musico/1.0"/>
+        <owl:imports rdf:resource="http://www.w3.org/2006/time#2016"/>
+        <owl:imports rdf:resource="http://xmlns.com/foaf/0.1/"/>
+        <owl:imports rdf:resource="https://schema.org/"/>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Annotation properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/dc/dcam/domainIncludes -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/dcam/domainIncludes"/>
+    
+
+
+    <!-- http://purl.org/dc/dcam/rangeIncludes -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/dcam/rangeIncludes"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/created -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/created"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/issued -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/issued"/>
+    
+
+
+    <!-- http://purl.org/dc/elements/1.1/modified -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/elements/1.1/modified"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/accessRights -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/accessRights"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/accrualMethod -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/accrualMethod"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/accrualPeriodicity -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/accrualPeriodicity"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/accrualPolicy -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/accrualPolicy"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/audience -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/audience"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/conformsTo -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/conformsTo"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/contributor -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/contributor"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/coverage -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/coverage"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/creator -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/creator"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/description -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/description"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/educationLevel -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/educationLevel"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/extent -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/extent"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/format -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/format"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/hasFormat -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/hasFormat"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/hasPart -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/hasPart"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/hasVersion -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/hasVersion"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isFormatOf -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/isFormatOf"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isPartOf -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/isPartOf"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isReferencedBy -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/isReferencedBy"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isReplacedBy -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/isReplacedBy"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isRequiredBy -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/isRequiredBy"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isVersionOf -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/isVersionOf"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/language -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/language"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/mediator -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/mediator"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/medium -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/medium"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/publisher -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/publisher"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/references -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/references"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/relation -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/relation"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/replaces -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/replaces"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/requires -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/requires"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/rights -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/rights"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/source -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/source"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/spatial -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/spatial"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/subject -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/subject"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/tableOfContents -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/tableOfContents"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/temporal -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/temporal"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/type -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/dc/terms/type"/>
+    
+
+
+    <!-- http://purl.org/ontology/ao/core#activity -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/ontology/ao/core#activity"/>
+    
+
+
+    <!-- http://purl.org/ontology/ao/core#context -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/ontology/ao/core#context"/>
+    
+
+
+    <!-- http://purl.org/ontology/ao/core#genre -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/ontology/ao/core#genre"/>
+    
+
+
+    <!-- http://purl.org/ontology/ao/core#location -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/ontology/ao/core#location"/>
+    
+
+
+    <!-- http://purl.org/ontology/ao/core#mood -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/ontology/ao/core#mood"/>
+    
+
+
+    <!-- http://purl.org/ontology/ao/core#occasion -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/ontology/ao/core#occasion"/>
+    
+
+
+    <!-- http://purl.org/ontology/ao/core#time -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/ontology/ao/core#time"/>
+    
+
+
+    <!-- http://purl.org/vocab/vann/preferredNamespacePrefix -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/vocab/vann/preferredNamespacePrefix"/>
+    
+
+
+    <!-- http://purl.org/vocab/vann/preferredNamespaceUri -->
+
+    <owl:AnnotationProperty rdf:about="http://purl.org/vocab/vann/preferredNamespaceUri"/>
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#pattern -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2001/XMLSchema#pattern"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#changeNote -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#changeNote"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#definition -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#definition"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#editorialNote -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#editorialNote"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#historyNote -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#historyNote"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#note -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#note"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#prefLabel -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#prefLabel"/>
+    
+
+
+    <!-- http://www.w3.org/2004/02/skos/core#scopeNote -->
+
+    <owl:AnnotationProperty rdf:about="http://www.w3.org/2004/02/skos/core#scopeNote"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#date -->
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#date"/>
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#duration -->
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#duration"/>
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#gDay -->
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#gDay"/>
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#gMonth -->
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#gMonth"/>
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#gYear -->
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#gYear"/>
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#gYearMonth -->
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#gYearMonth"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/ontology/musico#plays_genre -->
+
+    <rdf:Description rdf:about="http://purl.org/ontology/musico#plays_genre">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Artist"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.org/vocab/frbr/core#embodiment -->
+
+    <owl:ObjectProperty rdf:about="http://purl.org/vocab/frbr/core#embodiment"/>
+    
+
+
+    <!-- http://purl.org/vocab/frbr/core#exemplar -->
+
+    <owl:ObjectProperty rdf:about="http://purl.org/vocab/frbr/core#exemplar"/>
+    
+
+
+    <!-- http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/played_genre -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/played_genre">
+        <rdfs:domain rdf:resource="https://schema.org/MusicVenue"/>
+        <rdfs:range rdf:resource="http://purl.org/ontology/mo/Genre"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/popular_mood -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/popular_mood">
+        <rdfs:domain rdf:resource="http://purl.org/ontology/mo/Genre"/>
+        <rdfs:domain rdf:resource="http://purl.org/ontology/mo/MusicalWork"/>
+        <rdfs:domain rdf:resource="https://schema.org/Time"/>
+        <rdfs:range rdf:resource="http://purl.obolibrary.org/obo/MFOEM_000193"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/suggested_user -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/suggested_user">
+        <rdfs:domain rdf:resource="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Artist"/>
+        <rdfs:range rdf:resource="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Artist"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/used_to_play -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/used_to_play">
+        <rdfs:domain rdf:resource="http://purl.org/ontology/mo/Instrument"/>
+        <rdfs:range rdf:resource="http://purl.org/ontology/mo/Genre"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/depiction -->
+
+    <owl:ObjectProperty rdf:about="http://xmlns.com/foaf/0.1/depiction"/>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/isPrimaryTopicOf -->
+
+    <owl:ObjectProperty rdf:about="http://xmlns.com/foaf/0.1/isPrimaryTopicOf"/>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/member -->
+
+    <owl:ObjectProperty rdf:about="http://xmlns.com/foaf/0.1/member"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/foundation_day -->
+
+    <owl:DatatypeProperty rdf:about="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/foundation_day">
+        <rdfs:domain rdf:resource="http://purl.org/ontology/musico/MusiciansGroup"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/firstName -->
+
+    <owl:DatatypeProperty rdf:about="http://xmlns.com/foaf/0.1/firstName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/lastName -->
+
+    <owl:DatatypeProperty rdf:about="http://xmlns.com/foaf/0.1/lastName">
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://purl.org/dc/dcam/VocabularyEncodingScheme -->
+
+    <owl:Class rdf:about="http://purl.org/dc/dcam/VocabularyEncodingScheme"/>
+    
+
+
+    <!-- http://purl.org/ontology/musico#HumanMusician -->
+
+    <rdf:Description rdf:about="http://purl.org/ontology/musico#HumanMusician">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Artist"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.org/ontology/musico/MusiciansGroup -->
+
+    <rdf:Description rdf:about="http://purl.org/ontology/musico/MusiciansGroup">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Artist"/>
+    </rdf:Description>
+    
+
+
+    <!-- http://purl.org/ontology/similarity/Association -->
+
+    <owl:Class rdf:about="http://purl.org/ontology/similarity/Association"/>
+    
+
+
+    <!-- http://purl.org/stuff/rev#Review -->
+
+    <owl:Class rdf:about="http://purl.org/stuff/rev#Review"/>
+    
+
+
+    <!-- http://purl.org/vocab/frbr/core#Expression -->
+
+    <owl:Class rdf:about="http://purl.org/vocab/frbr/core#Expression"/>
+    
+
+
+    <!-- http://purl.org/vocab/frbr/core#Item -->
+
+    <owl:Class rdf:about="http://purl.org/vocab/frbr/core#Item"/>
+    
+
+
+    <!-- http://purl.org/vocab/frbr/core#Manifestation -->
+
+    <owl:Class rdf:about="http://purl.org/vocab/frbr/core#Manifestation"/>
+    
+
+
+    <!-- http://purl.org/vocab/frbr/core#Work -->
+
+    <owl:Class rdf:about="http://purl.org/vocab/frbr/core#Work"/>
+    
+
+
+    <!-- http://web.resource.org/cc/License -->
+
+    <owl:Class rdf:about="http://web.resource.org/cc/License"/>
+    
+
+
+    <!-- http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Artist -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Artist"/>
+    
+
+
+    <!-- http://www.w3.org/2000/01/rdf-schema#Class -->
+
+    <owl:Class rdf:about="http://www.w3.org/2000/01/rdf-schema#Class"/>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/Document -->
+
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Document"/>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/Image -->
+
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Image"/>
+    
+
+
+    <!-- http://xmlns.com/foaf/0.1/Organization -->
+
+    <owl:Class rdf:about="http://xmlns.com/foaf/0.1/Organization"/>
+    
+
+
+    <!-- https://schema.org/Time -->
+
+    <owl:Class rdf:about="https://schema.org/Time"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Individuals
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://foaf.me/zazi#me -->
+
+    <owl:NamedIndividual rdf:about="http://foaf.me/zazi#me"/>
+    
+
+
+    <!-- http://kurtisrandom.com/foaf.rdf#kurtjx -->
+
+    <owl:NamedIndividual rdf:about="http://kurtisrandom.com/foaf.rdf#kurtjx"/>
+    
+
+
+    <!-- http://moustaki.org/foaf.rdf#moustaki -->
+
+    <owl:NamedIndividual rdf:about="http://moustaki.org/foaf.rdf#moustaki"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/event.owl -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/event.owl"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/timeline.owl -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/timeline.owl"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#A -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#A"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#AFlat -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#AFlat"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#AFlatMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#AFlatMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#AFlatMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#AFlatMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#AMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#AMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#AMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#AMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#ASharp -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#ASharp"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#ASharpMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#ASharpMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#B -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#B"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#BFlat -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#BFlat"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#BFlatMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#BFlatMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#BFlatMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#BFlatMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#BMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#BMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#BMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#BMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#C -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#C"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#CFlat -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#CFlat"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#CFlatMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#CFlatMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#CMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#CMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#CMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#CMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#CSharp -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#CSharp"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#CSharpMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#CSharpMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#CSharpMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#CSharpMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#D -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#D"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#DFlat -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#DFlat"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#DFlatMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#DFlatMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#DMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#DMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#DMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#DMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#DSharp -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#DSharp"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#DSharpMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#DSharpMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#E -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#E"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#EFlat -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#EFlat"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#EFlatMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#EFlatMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#EFlatMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#EFlatMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#EMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#EMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#EMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#EMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#F -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#F"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#FMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#FMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#FMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#FMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#FSharp -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#FSharp"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#FSharpMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#FSharpMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#FSharpMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#FSharpMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#G -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#G"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#GFlat -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#GFlat"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#GFlatMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#GFlatMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#GMajor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#GMajor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#GMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#GMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#GSharp -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#GSharp"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/keys.owl#GSharpMinor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/keys.owl#GSharpMinor"/>
+    
+
+
+    <!-- http://purl.org/NET/c4dm/timeline.owl#universaltimeline -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/NET/c4dm/timeline.owl#universaltimeline"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/ -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/Agent -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/Agent"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/AgentClass -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/AgentClass"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/BibliographicResource -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/BibliographicResource"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/Box -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/Box"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/DCMIType -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/DCMIType"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/DDC -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/DDC"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/FileFormat -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/FileFormat"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/Frequency -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/Frequency"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/IMT -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/IMT"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/ISO3166 -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/ISO3166"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/ISO639-2 -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/ISO639-2"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/ISO639-3 -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/ISO639-3"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/Jurisdiction -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/Jurisdiction"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/LCC -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/LCC"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/LCSH -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/LCSH"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/LicenseDocument -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/LicenseDocument"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/LinguisticSystem -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/LinguisticSystem"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/Location -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/Location"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/LocationPeriodOrJurisdiction -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/LocationPeriodOrJurisdiction"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/MESH -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/MESH"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/MediaType -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/MediaType"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/MediaTypeOrExtent -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/MediaTypeOrExtent"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/MethodOfAccrual -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/MethodOfAccrual"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/MethodOfInstruction -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/MethodOfInstruction"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/NLM -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/NLM"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/Period -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/Period"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/PeriodOfTime -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/PeriodOfTime"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/PhysicalMedium -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/PhysicalMedium"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/PhysicalResource -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/PhysicalResource"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/Point -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/Point"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/Policy -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/Policy"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/ProvenanceStatement -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/ProvenanceStatement"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/RFC1766 -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/RFC1766"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/RFC3066 -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/RFC3066"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/RFC4646 -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/RFC4646"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/RFC5646 -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/RFC5646"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/RightsStatement -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/RightsStatement"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/SizeOrDuration -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/SizeOrDuration"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/Standard -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/Standard"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/TGN -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/TGN"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/UDC -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/UDC"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/URI -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/URI"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/W3CDTF -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/W3CDTF"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/abstract -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/abstract"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/accessRights -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/accessRights"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/accrualMethod -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/accrualMethod"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/accrualPeriodicity -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/accrualPeriodicity"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/accrualPolicy -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/accrualPolicy"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/audience -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/audience"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/conformsTo -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/conformsTo"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/contributor -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/contributor"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/coverage -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/coverage"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/creator -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/creator"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/description -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/description"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/educationLevel -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/educationLevel"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/extent -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/extent"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/format -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/format"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/hasFormat -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/hasFormat"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/hasPart -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/hasPart"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/hasVersion -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/hasVersion"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/instructionalMethod -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/instructionalMethod"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isFormatOf -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/isFormatOf"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isPartOf -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/isPartOf"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isReferencedBy -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/isReferencedBy"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isReplacedBy -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/isReplacedBy"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isRequiredBy -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/isRequiredBy"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/isVersionOf -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/isVersionOf"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/language -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/language"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/license -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/license"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/mediator -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/mediator"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/medium -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/medium"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/provenance -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/provenance"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/publisher -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/publisher"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/references -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/references"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/relation -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/relation"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/replaces -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/replaces"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/requires -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/requires"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/rights -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/rights"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/rightsHolder -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/rightsHolder"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/source -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/source"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/spatial -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/spatial"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/subject -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/subject"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/tableOfContents -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/tableOfContents"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/temporal -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/temporal"/>
+    
+
+
+    <!-- http://purl.org/dc/terms/type -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/dc/terms/type"/>
+    
+
+
+    <!-- http://purl.org/ontology/ao/core# -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/ao/core#"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/ -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/album -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/album"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/audiobook -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/audiobook"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/bootleg -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/bootleg"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/compilation -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/compilation"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/ep -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/ep"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/interview -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/interview"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/live -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/live"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/official -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/official"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/promotion -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/promotion"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/remix -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/remix"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/single -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/single"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/soundtrack -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/soundtrack"/>
+    
+
+
+    <!-- http://purl.org/ontology/mo/spokenword -->
+
+    <owl:NamedIndividual rdf:about="http://purl.org/ontology/mo/spokenword"/>
+    
+
+
+    <!-- http://raimond.me.uk/foaf.rdf#moustaki -->
+
+    <owl:NamedIndividual rdf:about="http://raimond.me.uk/foaf.rdf#moustaki"/>
+    
+
+
+    <!-- http://www.opengis.net/def/uom/ISO-8601/0/Gregorian -->
+
+    <owl:NamedIndividual rdf:about="http://www.opengis.net/def/uom/ISO-8601/0/Gregorian"/>
+    
+
+
+    <!-- http://www.semanticweb.org/jaco/ontologies/2023/7/musincohttp//www.w3.org/2006/time-entry#unitWeek -->
+
+    <owl:NamedIndividual rdf:about="http://www.semanticweb.org/jaco/ontologies/2023/7/musincohttp//www.w3.org/2006/time-entry#unitWeek"/>
+    
+
+
+    <!-- http://www.talkdigger.com/foaf/fgiasson -->
+
+    <owl:NamedIndividual rdf:about="http://www.talkdigger.com/foaf/fgiasson"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#Friday -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#Friday"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#Monday -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#Monday"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#Saturday -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#Saturday"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#Sunday -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#Sunday"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#Thursday -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#Thursday"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#Tuesday -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#Tuesday"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#Wednesday -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#Wednesday"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#unitDay -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#unitDay"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#unitHour -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#unitHour"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#unitMinute -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#unitMinute"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#unitMonth -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#unitMonth"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#unitSecond -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#unitSecond"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#unitWeek -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#unitWeek"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time#unitYear -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time#unitYear"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time-entry#unitDay -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time-entry#unitDay"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time-entry#unitHour -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time-entry#unitHour"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time-entry#unitMinute -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time-entry#unitMinute"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time-entry#unitMonth -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time-entry#unitMonth"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time-entry#unitSecond -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time-entry#unitSecond"/>
+    
+
+
+    <!-- http://www.w3.org/2006/time-entry#unitYear -->
+
+    <owl:NamedIndividual rdf:about="http://www.w3.org/2006/time-entry#unitYear"/>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.25.2023-02-15T19:15:49Z) https://github.com/owlcs/owlapi -->
+

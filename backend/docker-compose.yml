@@ -1,0 +1,262 @@
+services:
+
+  analysis-service:
+    image: docker.io/library/analysis:0.0.1-SNAPSHOT
+    container_name: analysis
+    depends_on:
+      - eureka-service
+#      - keycloak
+      - broker
+    networks:
+        - backend
+
+  eureka-service:
+    image: docker.io/library/eureka-service:0.0.1-SNAPSHOT
+    container_name: eureka
+    ports:
+      - 8761:8761
+    networks:
+      - backend
+
+  gateway-service:
+    image: docker.io/library/gateway-service:0.0.1-SNAPSHOT
+    container_name: gateway
+    ports:
+      - 8080:8080
+    depends_on:
+#      - keycloak
+      - eureka-service
+      - broker
+    networks:
+      - backend
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    networks:
+        - backend
+    volumes:
+        - mongo_data:/data/db
+
+
+
+  mongo-express:
+      image: mongo-express
+      restart: always
+      ports:
+        - 8082:8081
+      environment:
+        ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+        ME_CONFIG_MONGODB_ADMINPASSWORD: admin
+        ME_CONFIG_MONGODB_URL: mongodb://admin:admin@mongo:27017/
+        ME_CONFIG_BASICAUTH: false
+      networks:
+        - backend
+
+  keycloak:
+    image: musico-keycloak
+    container_name: keycloak
+    ports:
+      - 8082:8080
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloakdb:5432/keycloak
+      KC_DB_USERNAME: keycloak
+      KC_DB_PASSWORD: password
+      KC_PROXY: edge
+
+      KC_HOSTNAME: 192.168.188.28
+      KC_HOSTNAME_PORT: 8082
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+
+      KC_LOG_LEVEL: info
+      KC_METRICS_ENABLED: "true"
+      KC_HOSTNAME_DEBUG: "true"
+      KC_HEALTH_ENABLED: "true"
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+    command: start
+    depends_on:
+      - keycloakdb
+
+    networks:
+      - backend
+
+  keycloakdb:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
+    networks:
+      - backend
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data:/data
+    networks:
+      - backend
+  zookeeper:
+    image: confluentinc/cp-zookeeper:7.5.3
+    hostname: zookeeper
+    container_name: musico-zookeeper
+    ports:
+      - 2181:2181
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - backend
+
+  broker:
+    image: confluentinc/cp-enterprise-kafka:7.5.3
+    hostname: broker
+    container_name: musico-broker
+    depends_on:
+      - zookeeper
+    ports:
+      - 29092:29092
+      - 9092:9092
+      - 19092:19092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT,CONNECTIONS_FROM_HOST:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://broker:9092,CONNECTIONS_FROM_HOST://localhost:19092
+      KAFKA_METRIC_REPORTERS: io.confluent.metrics.reporter.ConfluentMetricsReporter
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
+      CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONFLUENT_METRICS_REPORTER_TOPIC_REPLICAS: 1
+      CONFLUENT_METRICS_ENABLE: '"true"'
+      CONFLUENT_SUPPORT_CUSTOMER_ID: anonymous
+    networks:
+      - backend
+
+  graphdb:
+    image: ontotext/graphdb:10.5.0
+    hostname: graphdb
+    container_name: musico-graphdb
+    ports:
+      - 7200:7200
+    networks:
+      - backend
+    volumes:
+        - graphdb_data:/opt/graphdb/home
+
+  add-connect:
+    build:
+      context: ../
+    image: kafka-sink-graphdb
+    hostname: add-connector
+    container_name: add-connector
+    depends_on:
+      - zookeeper
+      - broker
+      - graphdb
+    ports:
+      - 8083:8083
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: broker:9092
+      CONNECT_REST_ADVERTISED_HOST_NAME: add-connector
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: compose-connect-group-1
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.converters.ByteArrayConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.converters.ByteArrayConverter
+      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs-1
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets-1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status-1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=DEBUG,org.I0Itec.zkclient=DEBUG,org.reflections=ERROR
+    networks:
+      - backend
+
+  replace-connect:
+    build:
+      context: ../
+    image: kafka-sink-graphdb
+    hostname: replace-connect
+    container_name: replace-connect
+    depends_on:
+      - zookeeper
+      - broker
+      - graphdb
+    ports:
+      - 8084:8083
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: broker:9092
+      CONNECT_REST_ADVERTISED_HOST_NAME: replace-connect
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: compose-connect-group-2
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.converters.ByteArrayConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.converters.ByteArrayConverter
+      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs-2
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets-2
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status-2
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=DEBUG,org.I0Itec.zkclient=DEBUG,org.reflections=ERROR
+
+  del-ins-connect:
+    build:
+      context: ../
+    image: kafka-sink-graphdb
+    hostname: del-ins-connect
+    container_name: del-ins-connect
+    depends_on:
+      - zookeeper
+      - broker
+      - graphdb
+    ports:
+      - 8085:8083
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: broker:9092
+      CONNECT_REST_ADVERTISED_HOST_NAME: del-ins-connect
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: compose-connect-group-3
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.converters.ByteArrayConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.converters.ByteArrayConverter
+      CONNECT_INTERNAL_KEY_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_INTERNAL_VALUE_CONVERTER: org.apache.kafka.connect.json.JsonConverter
+      CONNECT_CONFIG_STORAGE_TOPIC: docker-connect-configs-3
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_FLUSH_INTERVAL_MS: 10000
+      CONNECT_OFFSET_STORAGE_TOPIC: docker-connect-offsets-3
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_TOPIC: docker-connect-status-3
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_ZOOKEEPER_CONNECT: zookeeper:2181
+      CONNECT_LOG4J_LOGGERS: org.apache.zookeeper=DEBUG,org.I0Itec.zkclient=DEBUG,org.reflections=ERROR
+volumes:
+  postgres_data: {}
+  graphdb_data: {}
+  mongo_data: {}
+
+networks:
+  backend:

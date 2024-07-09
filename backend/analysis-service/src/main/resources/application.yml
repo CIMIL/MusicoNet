@@ -1,0 +1,10 @@
+scheme: http
+keycloak-port: 8080
+keycloak-issuer: ${scheme}://localhost:${keycloak-port}/realms/musico-realm
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${keycloak-issuer}

@@ -1,0 +1,12 @@
+scheme: http
+keycloak-port: 8082
+keycloak-issuer: ${scheme}://204.216.223.231:${keycloak-port}/realms/musico-realm
+
+spring:
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: ${keycloak-issuer}/protocol/openid-connect/certs

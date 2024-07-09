@@ -1,4 +1,3 @@
-
 # MusicoNet
 
 MusicoNet is a social network designed for musicians, leveraging the Internet of Musical Things paradigm. This repository contains the source code for the MusicoNet platform, which is fully detailed in the accompanying article, "MusicoNet: A Social Network for Musicians Based on the Internet of Musical Things Paradigm".
@@ -16,6 +15,8 @@ Additionally, this directory includes a `docker-compose` file to facilitate the 
 ### Frontend
 
 The `frontend` directory houses the source code for the mobile application, enabling users to interact with the MusicoNet platform.
+
+For more information about the frontend code and how to run the mobile application, please refer to the [README](./frontend/README.md) file located in the `frontend` directory.
 
 ### Built with
 

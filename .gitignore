@@ -193,4 +193,7 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+# Apple Spotlight files
+.DS_Store
+
 # End of https://www.toptal.com/developers/gitignore/api/node,java,gradle

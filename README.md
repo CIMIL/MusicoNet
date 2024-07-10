@@ -1,6 +1,8 @@
 # MusicoNet
 
-MusicoNet is a social network designed for musicians, leveraging the Internet of Musical Things paradigm. This repository contains the source code for the MusicoNet platform, which is fully detailed in the accompanying article, "MusicoNet: A Social Network for Musicians Based on the Internet of Musical Things Paradigm".
+MusicoNet is a social network designed for musicians, leveraging the Internet of Musical Things paradigm (an extension of the Internet of Things to the musical domain). This repository contains the source code for the MusicoNet platform, which is fully detailed in the accompanying article, "MusicoNet: A Social Network for Musicians Based on the Internet of Musical Things Paradigm", Proceedings of the 5th IEEE International Symposium on the Internet of Sounds, 2024 (under review).
+
+The MusicoNet project is based on Semantic Web methods. In particular, it leverages  the Musician's Context Ontology (MUSICO), whose documentation is available at https://w3id.org/musico#.
 
 ## Repository structure
 

@@ -43,6 +43,7 @@ The backend is developed using the following technologies, make sure you have th
 
     ```bash
     cd essentia/essentia-service
+    python -m venv env
     source env/bin/activate
     pip install -r requirements.txt
     python3 main.py

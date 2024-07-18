@@ -73,11 +73,15 @@ public class DataRetriever {
         try (TupleQueryResult result = tupleQuery.evaluate()) {
             while (result.hasNext()) {
                 BindingSet bindingSet = result.next();
+                if (bindingSet.isEmpty()) {
+                    continue;
+                }
                 res.add(bindingSet);
             }
         } catch (Exception e) {
             log.error("Error executing query: {}", e.getMessage());
         }
-        return res;
+        log.debug("Results: {}", res);
+        return res.isEmpty() ? null : res;
     }
 }

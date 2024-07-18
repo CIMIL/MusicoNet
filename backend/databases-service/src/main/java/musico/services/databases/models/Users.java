@@ -259,7 +259,7 @@ public class Users implements OntEntity {
     }
 
     public static String getClassIRI() {
-        Namespace musinco = OntologyModel.getNamespace("musicoo");
+        Namespace musinco = OntologyModel.getNamespace("musico");
         assert musinco != null;
         return musinco.getName() + "HumanMusician";
     }

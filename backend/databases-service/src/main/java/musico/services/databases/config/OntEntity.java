@@ -4,14 +4,12 @@ import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.Resource;
 import org.eclipse.rdf4j.model.util.Values;
 import org.eclipse.rdf4j.sparqlbuilder.constraint.Expressions;
-import org.eclipse.rdf4j.sparqlbuilder.constraint.Operand;
 import org.eclipse.rdf4j.sparqlbuilder.core.SparqlBuilder;
 import org.eclipse.rdf4j.sparqlbuilder.core.Variable;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.GraphPatternNotTriples;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.GraphPatterns;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.TriplePattern;
 import org.eclipse.rdf4j.sparqlbuilder.rdf.Rdf;
-import org.eclipse.rdf4j.sparqlbuilder.rdf.RdfLiteral;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -129,11 +127,15 @@ public interface OntEntity {
                                                 )
                                         );
                                     }
+                                    for (TriplePattern tp : optional) {
+                                        patterns.add(GraphPatterns.and(tp));
+                                    }
+                                    optional.clear();
                                     for (IRI obj : objs) {
                                         optional.add(
                                                 GraphPatterns.tp(
                                                         obj,
-                                                        Values.iri(Objects.requireNonNull(OntologyModel.getPredicate("schema:name"))),
+                                                        Values.iri(Objects.requireNonNull(OntologyModel.getPredicate("schema1:name"))),
                                                         SparqlBuilder.var(obj.stringValue() + "_name")
                                                 )
                                         );
@@ -142,83 +144,18 @@ public interface OntEntity {
                                     break;
                                 case DATA:
                                     Object objValue = field.get(clazz);
-                                    System.out.println("Field: " + field.getName() + " val: " + objValue);
-                                    if (entity instanceof Variable) {
-                                        patterns.add(
-                                                GraphPatterns.optional(
-                                                        GraphPatterns.tp(
-                                                                (Variable) entity,
-                                                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
-                                                                Values.literal(objValue))
-                                                )
-                                        );
-                                    } else {
-                                        patterns.add(
-                                                GraphPatterns.optional(
-                                                        GraphPatterns.tp(
-                                                                (Resource) entity,
-                                                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
-                                                                Values.literal(objValue))
-                                                )
-                                        );
-                                    }
+                                    genLiteralEntityDoublePattern(entity, patterns, annotation, objValue);
                                     break;
                             }
                         } else { // FIELD IS EMPTY
-                            System.out.println("Field: " + field.getName() + " is null : " + field.get(clazz));
-                            List<TriplePattern> optional = new ArrayList<>();
-                            if (entity instanceof Variable) {
-                                optional.add(
-                                        GraphPatterns.tp(
-                                                (Variable) entity,
-                                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
-                                                SparqlBuilder.var(field.getName())
-                                        )
-                                );
-                            } else {
-                                optional.add(
-                                        GraphPatterns.tp(
-                                                (Resource) entity,
-                                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
-                                                SparqlBuilder.var(field.getName())
-                                        )
-                                );
-                            }
-                            if (annotation.type() == OBJECT) {
-                                optional.add(
-                                        GraphPatterns.tp(
-                                                SparqlBuilder.var(field.getName()),
-                                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate("schema:name"))),
-                                                SparqlBuilder.var(field.getName() + "_name")
-                                        )
-                                );
-                            }
-                            patterns.add(GraphPatterns.optional(optional.toArray(new TriplePattern[0])));
+                            genVariableDoubleEntityPattern(entity, patterns, field, annotation);
                         }
                     } else { // FIELD NOT A SET
                         switch (annotation.type()) {
                             case DATA: {
                                 Object objValue = field.get(clazz);
                                 if (!field.getName().equals("bpm")) {
-                                    if (entity instanceof Variable) {
-                                        patterns.add(
-                                                GraphPatterns.optional(
-                                                        GraphPatterns.tp(
-                                                                (Variable) entity,
-                                                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
-                                                                Values.literal(objValue))
-                                                )
-                                        );
-                                    } else {
-                                        patterns.add(
-                                                GraphPatterns.optional(
-                                                        GraphPatterns.tp(
-                                                                (Resource) entity,
-                                                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
-                                                                Values.literal(objValue))
-                                                )
-                                        );
-                                    }
+                                    genLiteralEntityDoublePattern(entity, patterns, annotation, objValue);
                                 } else {
                                     Integer bpm = (Integer) objValue;
                                     if (entity instanceof Variable) {
@@ -229,8 +166,8 @@ public interface OntEntity {
                                                                         Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
                                                                         SparqlBuilder.var(field.getName())
                                                                 )
-                                                        ).filter(Expressions.gte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm - 5)))
-                                                        .filter(Expressions.lte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm + 5))
+                                                        ).filter(Expressions.gte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm - 3)))
+                                                        .filter(Expressions.lte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm + 3))
                                                         )
                                         );
                                     } else {
@@ -240,8 +177,8 @@ public interface OntEntity {
                                                                         (Resource) entity,
                                                                         Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
                                                                         SparqlBuilder.var(field.getName())
-                                                                ).filter(Expressions.gte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm - 5)))
-                                                                .filter(Expressions.lte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm + 5))
+                                                                ).filter(Expressions.gte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm - 3)))
+                                                                .filter(Expressions.lte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm + 3))
                                                                 )
                                                 )
                                         );
@@ -269,10 +206,15 @@ public interface OntEntity {
                                             )
                                     );
                                 }
+
+                                for (TriplePattern tp : optional) {
+                                    patterns.add(GraphPatterns.and(tp));
+                                }
+                                optional.clear();
                                 optional.add(
                                         GraphPatterns.tp(
                                                 objValue.getIRI(),
-                                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate("schema:name"))),
+                                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate("schema1:name"))),
                                                 SparqlBuilder.var(field.getName() + "_name")
                                         )
                                 );
@@ -282,34 +224,7 @@ public interface OntEntity {
                         }
                     }
                 } else if (annotation != null) {
-                    List<TriplePattern> optional = new ArrayList<>();
-                    if (entity instanceof Variable) {
-                        optional.add(
-                                GraphPatterns.tp(
-                                        (Variable) entity,
-                                        Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
-                                        SparqlBuilder.var(field.getName())
-                                )
-                        );
-                    } else {
-                        optional.add(
-                                GraphPatterns.tp(
-                                        (Resource) entity,
-                                        Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
-                                        SparqlBuilder.var(field.getName())
-                                )
-                        );
-                    }
-                    if (annotation.type() == OBJECT) {
-                        optional.add(
-                                GraphPatterns.tp(
-                                        SparqlBuilder.var(field.getName()),
-                                        Values.iri(Objects.requireNonNull(OntologyModel.getPredicate("schema:name"))),
-                                        SparqlBuilder.var(field.getName() + "_name")
-                                )
-                        );
-                    }
-                    patterns.add(GraphPatterns.optional(optional.toArray(new TriplePattern[0])));
+                    genVariableDoubleEntityPattern(entity, patterns, field, annotation);
                 }
             } catch (IllegalAccessException e) {
                 System.out.println("Error while accessing field: " + e.getMessage());
@@ -319,9 +234,59 @@ public interface OntEntity {
         return res;
     }
 
+    private void genVariableDoubleEntityPattern(Object entity, List<GraphPatternNotTriples> patterns, Field field, OntEntityField annotation) {
+        List<TriplePattern> optional = new ArrayList<>();
+        if (entity instanceof Variable) {
+            optional.add(
+                    GraphPatterns.tp(
+                            (Variable) entity,
+                            Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
+                            SparqlBuilder.var(field.getName())
+                    )
+            );
+        } else {
+            optional.add(
+                    GraphPatterns.tp(
+                            (Resource) entity,
+                            Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
+                            SparqlBuilder.var(field.getName())
+                    )
+            );
+        }
+        if (annotation.type() == OBJECT) {
+            optional.add(
+                    GraphPatterns.tp(
+                            SparqlBuilder.var(field.getName()),
+                            Values.iri(Objects.requireNonNull(OntologyModel.getPredicate("schema1:name"))),
+                            SparqlBuilder.var(field.getName() + "_name")
+                    )
+            );
+        }
+        patterns.add(GraphPatterns.optional(optional.toArray(new TriplePattern[0])));
+    }
+
+    private void genLiteralEntityDoublePattern(Object entity, List<GraphPatternNotTriples> patterns, OntEntityField annotation, Object objValue) {
+        if (entity instanceof Variable) {
+            patterns.add(
+                    GraphPatterns.and(
+                            GraphPatterns.tp(
+                                    (Variable) entity,
+                                    Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
+                                    Values.literal(objValue)))
+            );
+        } else {
+            patterns.add(
+                    GraphPatterns.and(
+                            GraphPatterns.tp(
+                                    (Resource) entity,
+                                    Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
+                                    Values.literal(objValue)))
+            );
+        }
+    }
 
 
-private IRI[] getOntEntityIRIsArray(Object entitySet) {
+    private IRI[] getOntEntityIRIsArray(Object entitySet) {
     if (entitySet instanceof Set) {
         Set<OntEntity> entities = (Set<OntEntity>) entitySet;
         IRI[] iriArray = new IRI[entities.size()];

@@ -1,0 +1,222 @@
+<ex:ProfileTracks_test_0> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_metal>.
+<ex:ProfileTracks_test_0> mo:bpm 131.
+<ex:ProfileTracks_test_1> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_metal>.
+<ex:ProfileTracks_test_1> mo:bpm 111.
+<ex:ProfileTracks_test_2> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/t_country>.
+<ex:ProfileTracks_test_2> mo:bpm 129.
+<ex:ProfileTracks_test_3> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_jazz>.
+<ex:ProfileTracks_test_3> mo:bpm 131.
+<ex:ProfileTracks_test_4> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/t_country>.
+<ex:ProfileTracks_test_4> mo:bpm 131.
+<ex:ProfileTracks_test_5> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/t_country>.
+<ex:ProfileTracks_test_5> mo:bpm 129.
+<ex:ProfileTracks_test_6> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock>.
+<ex:ProfileTracks_test_6> mo:bpm 131.
+<ex:ProfileTracks_test_7> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock>.
+<ex:ProfileTracks_test_7> mo:bpm 137.
+<ex:ProfileTracks_test_8> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<ex:ProfileTracks_test_8> mo:bpm 133.
+<ex:ProfileTracks_test_9> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<ex:ProfileTracks_test_9> mo:bpm 135.
+<ex:ProfileTracks_test_10> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/t_country>.
+<ex:ProfileTracks_test_10> mo:bpm 137.
+<ex:ProfileTracks_test_11> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_metal>.
+<ex:ProfileTracks_test_11> mo:bpm 118.
+<ex:ProfileTracks_test_12> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock>.
+<ex:ProfileTracks_test_12> mo:bpm 125.
+<ex:ProfileTracks_test_13> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<ex:ProfileTracks_test_13> mo:bpm 120.
+<ex:ProfileTracks_test_14> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<ex:ProfileTracks_test_14> mo:bpm 126.
+<ex:ProfileTracks_test_15> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<ex:ProfileTracks_test_15> mo:bpm 137.
+<ex:ProfileTracks_test_16> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_class>.
+<ex:ProfileTracks_test_16> mo:bpm 123.
+<ex:ProfileTracks_test_17> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<ex:ProfileTracks_test_17> mo:bpm 120.
+<ex:ProfileTracks_test_18> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_class>.
+<ex:ProfileTracks_test_18> mo:bpm 130.
+<ex:ProfileTracks_test_19> mo:genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock>.
+<ex:ProfileTracks_test_19> mo:bpm 132.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_19c5dfd5-1cbf-4020-aa40-6f511b5a201e> musico:in_participation <ex:SavedTracks_test_19c5dfd5-1cbf-4020-aa40-6f511b5a201e>.
+<ex:SavedTracks_test_19c5dfd5-1cbf-4020-aa40-6f511b5a201e> musico:played_musical_work <ex:ProfileTracks_test_8>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_1d3208bd-a727-4336-8921-6994b6f3d0ec> musico:in_participation <ex:SavedTracks_test_1d3208bd-a727-4336-8921-6994b6f3d0ec>.
+<ex:SavedTracks_test_1d3208bd-a727-4336-8921-6994b6f3d0ec> musico:played_musical_work <ex:ProfileTracks_test_7>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_1dd2249a-01af-47cf-9fef-b583a1f54b67> musico:in_participation <ex:SavedTracks_test_1dd2249a-01af-47cf-9fef-b583a1f54b67>.
+<ex:SavedTracks_test_1dd2249a-01af-47cf-9fef-b583a1f54b67> musico:played_musical_work <ex:ProfileTracks_test_10>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_3b6b6d9d-c810-4ad8-bf17-4d10b5d6eccf> musico:in_participation <ex:SavedTracks_test_3b6b6d9d-c810-4ad8-bf17-4d10b5d6eccf>.
+<ex:SavedTracks_test_3b6b6d9d-c810-4ad8-bf17-4d10b5d6eccf> musico:played_musical_work <ex:ProfileTracks_test_13>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_45ce1da1-6e5e-4fa9-8a60-d8ed2cafd50f> musico:in_participation <ex:SavedTracks_test_45ce1da1-6e5e-4fa9-8a60-d8ed2cafd50f>.
+<ex:SavedTracks_test_45ce1da1-6e5e-4fa9-8a60-d8ed2cafd50f> musico:played_musical_work <ex:ProfileTracks_test_12>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_46ef1ead-c397-487b-a70a-5990354833eb> musico:in_participation <ex:SavedTracks_test_46ef1ead-c397-487b-a70a-5990354833eb>.
+<ex:SavedTracks_test_46ef1ead-c397-487b-a70a-5990354833eb> musico:played_musical_work <ex:ProfileTracks_test_5>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_48027b1d-6351-466b-b8a2-9975781c8256> musico:in_participation <ex:SavedTracks_test_48027b1d-6351-466b-b8a2-9975781c8256>.
+<ex:SavedTracks_test_48027b1d-6351-466b-b8a2-9975781c8256> musico:played_musical_work <ex:ProfileTracks_test_5>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_4edd221c-c845-4d72-b31e-085d9b51ac5e> musico:in_participation <ex:SavedTracks_test_4edd221c-c845-4d72-b31e-085d9b51ac5e>.
+<ex:SavedTracks_test_4edd221c-c845-4d72-b31e-085d9b51ac5e> musico:played_musical_work <ex:ProfileTracks_test_4>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_5faeaaa9-b0b1-4914-a8af-086c30543191> musico:in_participation <ex:SavedTracks_test_5faeaaa9-b0b1-4914-a8af-086c30543191>.
+<ex:SavedTracks_test_5faeaaa9-b0b1-4914-a8af-086c30543191> musico:played_musical_work <ex:ProfileTracks_test_12>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_60973b59-47be-42fe-84e2-64ed96bb1af9> musico:in_participation <ex:SavedTracks_test_60973b59-47be-42fe-84e2-64ed96bb1af9>.
+<ex:SavedTracks_test_60973b59-47be-42fe-84e2-64ed96bb1af9> musico:played_musical_work <ex:ProfileTracks_test_8>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_801c9f07-a212-49a0-90d4-033c98c911fc> musico:in_participation <ex:SavedTracks_test_801c9f07-a212-49a0-90d4-033c98c911fc>.
+<ex:SavedTracks_test_801c9f07-a212-49a0-90d4-033c98c911fc> musico:played_musical_work <ex:ProfileTracks_test_19>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_856609c4-0e0b-4505-b42c-c3d63c0080a2> musico:in_participation <ex:SavedTracks_test_856609c4-0e0b-4505-b42c-c3d63c0080a2>.
+<ex:SavedTracks_test_856609c4-0e0b-4505-b42c-c3d63c0080a2> musico:played_musical_work <ex:ProfileTracks_test_8>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_85bc2fe5-216e-4a41-ac15-3d4c62aee155> musico:in_participation <ex:SavedTracks_test_85bc2fe5-216e-4a41-ac15-3d4c62aee155>.
+<ex:SavedTracks_test_85bc2fe5-216e-4a41-ac15-3d4c62aee155> musico:played_musical_work <ex:ProfileTracks_test_18>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_9b6ff5b3-8612-4e40-8bbc-bd54abae6e8e> musico:in_participation <ex:SavedTracks_test_9b6ff5b3-8612-4e40-8bbc-bd54abae6e8e>.
+<ex:SavedTracks_test_9b6ff5b3-8612-4e40-8bbc-bd54abae6e8e> musico:played_musical_work <ex:ProfileTracks_test_16>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_a5dad52d-cdac-417b-b592-aebac97a0bdb> musico:in_participation <ex:SavedTracks_test_a5dad52d-cdac-417b-b592-aebac97a0bdb>.
+<ex:SavedTracks_test_a5dad52d-cdac-417b-b592-aebac97a0bdb> musico:played_musical_work <ex:ProfileTracks_test_15>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_b196ebef-f3e4-47f3-a94f-01db154098a8> musico:in_participation <ex:SavedTracks_test_b196ebef-f3e4-47f3-a94f-01db154098a8>.
+<ex:SavedTracks_test_b196ebef-f3e4-47f3-a94f-01db154098a8> musico:played_musical_work <ex:ProfileTracks_test_17>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_b8fe4234-400a-4ebe-8bf1-4c3517a2a817> musico:in_participation <ex:SavedTracks_test_b8fe4234-400a-4ebe-8bf1-4c3517a2a817>.
+<ex:SavedTracks_test_b8fe4234-400a-4ebe-8bf1-4c3517a2a817> musico:played_musical_work <ex:ProfileTracks_test_17>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_c038b1cb-49b9-4a53-86e8-85b5e3d06e93> musico:in_participation <ex:SavedTracks_test_c038b1cb-49b9-4a53-86e8-85b5e3d06e93>.
+<ex:SavedTracks_test_c038b1cb-49b9-4a53-86e8-85b5e3d06e93> musico:played_musical_work <ex:ProfileTracks_test_4>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_c962c55a-344a-4e9b-968e-04ca5c9461e7> musico:in_participation <ex:SavedTracks_test_c962c55a-344a-4e9b-968e-04ca5c9461e7>.
+<ex:SavedTracks_test_c962c55a-344a-4e9b-968e-04ca5c9461e7> musico:played_musical_work <ex:ProfileTracks_test_15>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_d9041a9e-f8cd-43e1-a0bf-95e42bbc32f4> musico:in_participation <ex:SavedTracks_test_d9041a9e-f8cd-43e1-a0bf-95e42bbc32f4>.
+<ex:SavedTracks_test_d9041a9e-f8cd-43e1-a0bf-95e42bbc32f4> musico:played_musical_work <ex:ProfileTracks_test_16>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_dd1efee5-562f-4902-9c8b-d5713a612bfa> musico:in_participation <ex:SavedTracks_test_dd1efee5-562f-4902-9c8b-d5713a612bfa>.
+<ex:SavedTracks_test_dd1efee5-562f-4902-9c8b-d5713a612bfa> musico:played_musical_work <ex:ProfileTracks_test_1>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_de749549-ad83-43bb-a0c1-49d87d315899> musico:in_participation <ex:SavedTracks_test_de749549-ad83-43bb-a0c1-49d87d315899>.
+<ex:SavedTracks_test_de749549-ad83-43bb-a0c1-49d87d315899> musico:played_musical_work <ex:ProfileTracks_test_1>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_df58a281-5d12-48b9-9466-e2da1f875441> musico:in_participation <ex:SavedTracks_test_df58a281-5d12-48b9-9466-e2da1f875441>.
+<ex:SavedTracks_test_df58a281-5d12-48b9-9466-e2da1f875441> musico:played_musical_work <ex:ProfileTracks_test_10>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_e9885b6c-1c9d-4dd9-83af-545f430ea052> musico:in_participation <ex:SavedTracks_test_e9885b6c-1c9d-4dd9-83af-545f430ea052>.
+<ex:SavedTracks_test_e9885b6c-1c9d-4dd9-83af-545f430ea052> musico:played_musical_work <ex:ProfileTracks_test_18>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_e9b827e3-ac53-4eaf-83d2-923ed12fea02> musico:in_participation <ex:SavedTracks_test_e9b827e3-ac53-4eaf-83d2-923ed12fea02>.
+<ex:SavedTracks_test_e9b827e3-ac53-4eaf-83d2-923ed12fea02> musico:played_musical_work <ex:ProfileTracks_test_1>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_ebd2e3c4-9fde-41c0-9f6b-a9a3c8786056> musico:in_participation <ex:SavedTracks_test_ebd2e3c4-9fde-41c0-9f6b-a9a3c8786056>.
+<ex:SavedTracks_test_ebd2e3c4-9fde-41c0-9f6b-a9a3c8786056> musico:played_musical_work <ex:ProfileTracks_test_6>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_efc9c33d-6fd3-440d-9793-bf05a55a094a> musico:in_participation <ex:SavedTracks_test_efc9c33d-6fd3-440d-9793-bf05a55a094a>.
+<ex:SavedTracks_test_efc9c33d-6fd3-440d-9793-bf05a55a094a> musico:played_musical_work <ex:ProfileTracks_test_10>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f18568c5-0cce-47d0-90cb-96d282b9ef9f> musico:in_participation <ex:SavedTracks_test_f18568c5-0cce-47d0-90cb-96d282b9ef9f>.
+<ex:SavedTracks_test_f18568c5-0cce-47d0-90cb-96d282b9ef9f> musico:played_musical_work <ex:ProfileTracks_test_5>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f4ef65c6-1a81-498f-bde3-d466bfb67ea9> musico:in_participation <ex:SavedTracks_test_f4ef65c6-1a81-498f-bde3-d466bfb67ea9>.
+<ex:SavedTracks_test_f4ef65c6-1a81-498f-bde3-d466bfb67ea9> musico:played_musical_work <ex:ProfileTracks_test_2>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f72de9d6-15fb-4725-a571-b575703e5fe8> musico:in_participation <ex:SavedTracks_test_f72de9d6-15fb-4725-a571-b575703e5fe8>.
+<ex:SavedTracks_test_f72de9d6-15fb-4725-a571-b575703e5fe8> musico:played_musical_work <ex:ProfileTracks_test_6>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/t_country> a mo:Genre .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/t_country> schema:name "Country" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues> a mo:Genre .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues> schema:name "Blues" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_class> a mo:Genre .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_class> schema:name "Classical" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_jazz> a mo:Genre .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_jazz> schema:name "Jazz" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_metal> a mo:Genre .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_metal> schema:name "Metal" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_pop> a mo:Genre .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_pop> schema:name "Pop" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock> a mo:Genre .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock> schema:name "Rock" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/1> a mo:Instrument .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/1> schema:name "chitarra" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/2> a mo:Instrument .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/2> schema:name "guitar" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/3> a mo:Instrument .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/3> schema:name "Bass" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/4> a mo:Instrument .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/4> schema:name "Drums" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/6> a mo:Instrument .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/6> schema:name "Keyboard" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/7> a mo:Instrument .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/7> schema:name "Piano" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/8> a mo:Instrument .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/8> schema:name "Saxophone" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/9> a mo:Instrument .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/9> schema:name "Trumpet" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/10> a mo:Instrument .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/10> schema:name "Violin" .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_19c5dfd5-1cbf-4020-aa40-6f511b5a201e> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_19c5dfd5-1cbf-4020-aa40-6f511b5a201e> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_19c5dfd5-1cbf-4020-aa40-6f511b5a201e> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/9>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_1d3208bd-a727-4336-8921-6994b6f3d0ec> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_1d3208bd-a727-4336-8921-6994b6f3d0ec> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_1d3208bd-a727-4336-8921-6994b6f3d0ec> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/6>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_1dd2249a-01af-47cf-9fef-b583a1f54b67> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_1dd2249a-01af-47cf-9fef-b583a1f54b67> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_metal>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_1dd2249a-01af-47cf-9fef-b583a1f54b67> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/7>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_3b6b6d9d-c810-4ad8-bf17-4d10b5d6eccf> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_3b6b6d9d-c810-4ad8-bf17-4d10b5d6eccf> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_3b6b6d9d-c810-4ad8-bf17-4d10b5d6eccf> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/8>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_45ce1da1-6e5e-4fa9-8a60-d8ed2cafd50f> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_45ce1da1-6e5e-4fa9-8a60-d8ed2cafd50f> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_class>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_45ce1da1-6e5e-4fa9-8a60-d8ed2cafd50f> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/4>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_46ef1ead-c397-487b-a70a-5990354833eb> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_46ef1ead-c397-487b-a70a-5990354833eb> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_class>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_46ef1ead-c397-487b-a70a-5990354833eb> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/8>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_48027b1d-6351-466b-b8a2-9975781c8256> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_48027b1d-6351-466b-b8a2-9975781c8256> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_48027b1d-6351-466b-b8a2-9975781c8256> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/1>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_4edd221c-c845-4d72-b31e-085d9b51ac5e> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_4edd221c-c845-4d72-b31e-085d9b51ac5e> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_class>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_4edd221c-c845-4d72-b31e-085d9b51ac5e> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/9>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_5faeaaa9-b0b1-4914-a8af-086c30543191> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_5faeaaa9-b0b1-4914-a8af-086c30543191> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/t_country>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_5faeaaa9-b0b1-4914-a8af-086c30543191> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/6>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_60973b59-47be-42fe-84e2-64ed96bb1af9> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_60973b59-47be-42fe-84e2-64ed96bb1af9> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_60973b59-47be-42fe-84e2-64ed96bb1af9> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/4>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_801c9f07-a212-49a0-90d4-033c98c911fc> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_801c9f07-a212-49a0-90d4-033c98c911fc> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_metal>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_801c9f07-a212-49a0-90d4-033c98c911fc> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/7>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_856609c4-0e0b-4505-b42c-c3d63c0080a2> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_856609c4-0e0b-4505-b42c-c3d63c0080a2> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_856609c4-0e0b-4505-b42c-c3d63c0080a2> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/3>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_85bc2fe5-216e-4a41-ac15-3d4c62aee155> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_85bc2fe5-216e-4a41-ac15-3d4c62aee155> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_jazz>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_85bc2fe5-216e-4a41-ac15-3d4c62aee155> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/3>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_9b6ff5b3-8612-4e40-8bbc-bd54abae6e8e> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_9b6ff5b3-8612-4e40-8bbc-bd54abae6e8e> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_metal>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_9b6ff5b3-8612-4e40-8bbc-bd54abae6e8e> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/10>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_a5dad52d-cdac-417b-b592-aebac97a0bdb> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_a5dad52d-cdac-417b-b592-aebac97a0bdb> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/t_country>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_a5dad52d-cdac-417b-b592-aebac97a0bdb> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/10>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_b196ebef-f3e4-47f3-a94f-01db154098a8> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_b196ebef-f3e4-47f3-a94f-01db154098a8> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/t_country>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_b196ebef-f3e4-47f3-a94f-01db154098a8> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/7>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_b8fe4234-400a-4ebe-8bf1-4c3517a2a817> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_b8fe4234-400a-4ebe-8bf1-4c3517a2a817> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_jazz>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_b8fe4234-400a-4ebe-8bf1-4c3517a2a817> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/4>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_c038b1cb-49b9-4a53-86e8-85b5e3d06e93> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_c038b1cb-49b9-4a53-86e8-85b5e3d06e93> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_metal>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_c038b1cb-49b9-4a53-86e8-85b5e3d06e93> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/8>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_c962c55a-344a-4e9b-968e-04ca5c9461e7> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_c962c55a-344a-4e9b-968e-04ca5c9461e7> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_class>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_c962c55a-344a-4e9b-968e-04ca5c9461e7> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/7>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_d9041a9e-f8cd-43e1-a0bf-95e42bbc32f4> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_d9041a9e-f8cd-43e1-a0bf-95e42bbc32f4> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_d9041a9e-f8cd-43e1-a0bf-95e42bbc32f4> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/6>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_dd1efee5-562f-4902-9c8b-d5713a612bfa> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_dd1efee5-562f-4902-9c8b-d5713a612bfa> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/t_country>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_dd1efee5-562f-4902-9c8b-d5713a612bfa> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/10>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_de749549-ad83-43bb-a0c1-49d87d315899> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_de749549-ad83-43bb-a0c1-49d87d315899> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_metal>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_de749549-ad83-43bb-a0c1-49d87d315899> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/6>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_df58a281-5d12-48b9-9466-e2da1f875441> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_df58a281-5d12-48b9-9466-e2da1f875441> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_df58a281-5d12-48b9-9466-e2da1f875441> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/10>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_e9885b6c-1c9d-4dd9-83af-545f430ea052> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_e9885b6c-1c9d-4dd9-83af-545f430ea052> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_pop>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_e9885b6c-1c9d-4dd9-83af-545f430ea052> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/9>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_e9b827e3-ac53-4eaf-83d2-923ed12fea02> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_e9b827e3-ac53-4eaf-83d2-923ed12fea02> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_pop>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_e9b827e3-ac53-4eaf-83d2-923ed12fea02> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/8>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_ebd2e3c4-9fde-41c0-9f6b-a9a3c8786056> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_ebd2e3c4-9fde-41c0-9f6b-a9a3c8786056> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_blues>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_ebd2e3c4-9fde-41c0-9f6b-a9a3c8786056> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/6>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_efc9c33d-6fd3-440d-9793-bf05a55a094a> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_efc9c33d-6fd3-440d-9793-bf05a55a094a> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_efc9c33d-6fd3-440d-9793-bf05a55a094a> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/9>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f18568c5-0cce-47d0-90cb-96d282b9ef9f> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f18568c5-0cce-47d0-90cb-96d282b9ef9f> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_rock>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f18568c5-0cce-47d0-90cb-96d282b9ef9f> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/4>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f4ef65c6-1a81-498f-bde3-d466bfb67ea9> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f4ef65c6-1a81-498f-bde3-d466bfb67ea9> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_class>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f4ef65c6-1a81-498f-bde3-d466bfb67ea9> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/8>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f72de9d6-15fb-4725-a571-b575703e5fe8> a musico:HumanMusician .
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f72de9d6-15fb-4725-a571-b575703e5fe8> musico:plays_genre <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Genre/test_class>.
+<http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Users/test_f72de9d6-15fb-4725-a571-b575703e5fe8> musico:plays_instrument <http://www.semanticweb.org/jaco/ontologies/2023/7/musinco/Instruments/7>.

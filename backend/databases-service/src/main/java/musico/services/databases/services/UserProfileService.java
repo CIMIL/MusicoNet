@@ -40,14 +40,13 @@ public class UserProfileService {
 
     public UsersQueryParams getUserProfile(UsersQueryParams userSignup) {
         Users user = userService.getUserProfile(userSignup.userId());
-        log.info("User: {}", user);
-        GraphPatternNotTriples userQuery = usersQueryParamsService.buildQueryGraphPattern(userSignup);
-        log.info("User Query: {}", userQuery.getQueryString());
-        List<BindingSet> results = dataRetriever.createAndExecuteSelectQuery(userQuery);
-        if (results.isEmpty()) {
-            log.error("No results found for user: {}", userSignup);
+        if (user == null) {
+            log.error("User not found: {}", userSignup.userId());
             return null;
         }
+        GraphPatternNotTriples userQuery = usersQueryParamsService.buildQueryGraphPattern(userSignup);
+        List<BindingSet> results = dataRetriever.createAndExecuteSelectQuery(userQuery);
+        log.debug("results found for user: {}", results);
         UsersQueryParams.UsersQueryParamsBuilder builder = usersQueryParamsService.getResponseMessageFromQueryResults(results);
         builder.userId(userSignup.userId())
                 .requestID(userSignup.requestID())

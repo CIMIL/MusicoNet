@@ -17,6 +17,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @Component
@@ -45,27 +46,27 @@ public class AnalysisListener {
         log.debug("Received message from {}", message);
         try {
             GraphPatternNotTriples query = musicalWorkQueryParamsService.buildQueryGraphPattern(message);
-            {//Test
-                UsersQueryParams user = UsersQueryParams.builder()
-                        .requestID(message.requestId())
-                        .userId("ex")
-                        .build();
-                kafkaTemplate.send("analysis-query_params_response", user);
-            }
+            HashSet<String> alreadySent = new HashSet<>();
             for (BindingSet row : dataRetriever.createAndExecuteSelectQuery(query)) {
                 log.debug("Row: {}", row);
-                if (row.getValue("user").toString().contains("ex")) {
+                if (row.getValue("user").toString().contains("ex") || row.getValue("user").toString().contains(message.requestId())) {
                     continue;
+                }
+                String id = row.getValue("user").stringValue().split("/")[row.getValue("user").stringValue().split("/").length - 1];
+                if (alreadySent.contains(id)) {
+                    continue;
+                }else {
+                    alreadySent.add(id);
                 }
                 UsersQueryParams user = UsersQueryParams.builder()
                         .requestID(message.requestId())
-                        .userId((row.getValue("user").stringValue().split("/")[row.getValue("user").stringValue().split("/").length - 1]))
+                        .userId(id)
                         .build();
                 UsersQueryParams response = userProfileService.getUserProfile(user);
-
-                log.debug("Response: {}", response);
+                if (response == null) {
+                    continue;
+                }
                 kafkaTemplate.send("analysis-query_params_response", response);
-
             }
         } catch (Exception e) {
             log.error("Error: {}", e.getMessage());

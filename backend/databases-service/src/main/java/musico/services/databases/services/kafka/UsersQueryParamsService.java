@@ -84,7 +84,7 @@ public class UsersQueryParamsService {
 
     public UsersQueryParamsBuilder getResponseMessageFromQueryResults(List<BindingSet> params) {
         UsersQueryParamsBuilder response = UsersQueryParams.builder();
-        if (params.isEmpty()) {
+        if (params == null || params.isEmpty() ) {
             log.info("Response is empty");
             return response;
         }

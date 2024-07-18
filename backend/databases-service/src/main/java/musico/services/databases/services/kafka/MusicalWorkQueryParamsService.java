@@ -35,6 +35,7 @@ public class MusicalWorkQueryParamsService {
         log.info("Genre: {}", genre.toString());
         return MWork.builder()
                 .genre(genre)
+                .mood(queryParams.mood())
                 .bpm(queryParams.bpm())
                 .key(queryParams.tonality().key() + queryParams.tonality().scale())
                 .build();
@@ -43,10 +44,14 @@ public class MusicalWorkQueryParamsService {
     private GraphPatternNotTriples getQueryPreface() {
         Variable musicalWork = SparqlBuilder.var("musicalWork");
         Variable user = SparqlBuilder.var("user");
+        Variable musParticipation = SparqlBuilder.var("musParticipation");
         return GraphPatterns.and(user.has(
-                p -> p.pred(Values.iri(Objects.requireNonNull(OntologyModel.getNamespace("musicoo")).getName() + "in_participation")).
-                        then(Values.iri(Objects.requireNonNull(OntologyModel.getNamespace("musicoo")).getName() + "played_musical_work")),
-                musicalWork));
+                p -> p.pred(Values.iri(Objects.requireNonNull(OntologyModel.getNamespace("musicoo")).getName() + "in_participation")),
+                        musParticipation),
+                musParticipation.has(
+                        p -> p.pred(Values.iri(Objects.requireNonNull(OntologyModel.getNamespace("musicoo")).getName() + "played_musical_work")),
+                        musicalWork)
+                );
     }
 
     public GraphPatternNotTriples getQueryBody(MusicalWorkQueryParams params) {

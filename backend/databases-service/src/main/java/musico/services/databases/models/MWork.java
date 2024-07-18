@@ -52,6 +52,10 @@ public class MWork implements OntEntity {
     @OntEntityField(type = OntEntityField.DataType.DATA, pred = "mo:bpm")
     private Integer bpm;
 
+    @Transient
+//    @OntEntityField(type = OntEntityField.DataType.DATA, pred = "mo:mood")
+    private String mood; // Used to describe the mood of the saved musical work. Connect to SavedTrack MusParticipation
+
     @Size(max = 10)
     @Column(name = "meter", length = 10)
     private String meter;

@@ -1,13 +1,14 @@
 import json
 import statistics
+import jwt
+from jwt import PyJWKClient
 import py_eureka_client.eureka_client as eureka_client
 from flask import Flask, request, jsonify, Response
 from kafka import KafkaProducer
 from pprint import pprint
 from flask_restful import Api
-import numpy as np
-producer = KafkaProducer(bootstrap_servers='localhost:19092')
 
+producer = KafkaProducer(bootstrap_servers='localhost:19092')
 from tempfile import TemporaryDirectory
 
 import essentia.standard as es
@@ -29,6 +30,19 @@ to_skip = ["tonal.chords_histogram"]
 metadata = {}
 with open('msd-musicnn-1.json', 'r') as json_file:
     metadata = json.load(json_file)
+
+
+def parse_auth_token(request):
+    jwks_client = PyJWKClient('http://204.216.223.231:8082/realms/musico-realm/protocol/openid-connect/certs')
+    data = request.headers['Authorization']
+    token = str.replace(str(data), 'Bearer ', '')
+
+    print("Token:", token)
+    signing_key = jwks_client.get_signing_key_from_jwt(token)
+    singing_algos = ['RS256']
+    data = jwt.decode(token, signing_key.key, algorithms=singing_algos, audience='account')
+    pprint(data)
+    return data
 
 
 def genreMoodPrediction(file_path):
@@ -61,8 +75,9 @@ def featurePrediction(audio_path):
     return bpm, key, scale, danceability
 
 
-@app.route('/audio_analysis', methods=['GET', 'POST'])
+@app.route('/audio/analysis', methods=['GET', 'POST'])
 def audio_analysis(file=None):
+    username = parse_auth_token(request)['sub']
     print("audio_analysis():")
     # Get the file from the request
     data = {}
@@ -90,6 +105,7 @@ def audio_analysis(file=None):
                 'key': key,
                 'scale': scale
             }
+            data['requestId'] = username
 
         try:
             # producer.send("audio_analysis",  bytes(str(data), 'utf-8'))

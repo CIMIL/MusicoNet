@@ -32,9 +32,11 @@ public class MusicalWorkQueryParamsService {
     private OntEntity getOntEntity(MusicalWorkQueryParams queryParams) {
         // TODO: Change in order to use more Genres, only one is used for now
         Genre genre = genreRepository.findByGenreNameLike(queryParams.genres()[0]);
+        log.info("Genre: {}", genre.toString());
         return MWork.builder()
                 .genre(genre)
                 .bpm(queryParams.bpm())
+                .key(queryParams.tonality().key() + queryParams.tonality().scale())
                 .build();
     }
 
@@ -49,6 +51,7 @@ public class MusicalWorkQueryParamsService {
 
     public GraphPatternNotTriples getQueryBody(MusicalWorkQueryParams params) {
         MWork dataToQuery = (MWork) getOntEntity(params);
+        log.info(dataToQuery.toString());
         return dataToQuery.buildGenericQueryGraphPattern(dataToQuery);
     }
 }

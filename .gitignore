@@ -5,6 +5,7 @@
 *.te
 *.pb
 backend/essentia/essentia-service/env/
+backend/.idea
 ### Java ###
 # Compiled class file
 *.class

@@ -42,7 +42,7 @@ public class AnalysisListener {
     @KafkaListener(topics = "analysis-query_params", groupId = "databases-service",
             containerFactory = "musicalWorkQueryParamsListener")
     public void listen(MusicalWorkQueryParams message) {
-        log.debug("Received message from {}", message.requestId());
+        log.debug("Received message from {}", message);
         try {
             GraphPatternNotTriples query = musicalWorkQueryParamsService.buildQueryGraphPattern(message);
             {//Test

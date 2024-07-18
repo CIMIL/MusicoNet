@@ -15,6 +15,7 @@ import org.eclipse.rdf4j.sparqlbuilder.core.Variable;
 @Getter
 @Setter
 @Entity
+@ToString
 @Builder
 @Table(name = "musical_work")
 @NoArgsConstructor

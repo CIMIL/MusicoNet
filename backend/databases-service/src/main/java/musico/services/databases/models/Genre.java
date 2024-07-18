@@ -20,13 +20,14 @@ import org.eclipse.rdf4j.sparqlbuilder.core.Variable;
 @Setter
 @Entity
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "genre")
 public class Genre implements OntEntity {
     @Id
     @Column(name = "genre_id", nullable = false)
-    private Integer id;
+    private String id;
 
     @Size(max = 50)
     @NotNull

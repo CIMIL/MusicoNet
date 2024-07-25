@@ -7,6 +7,7 @@ import musico.services.databases.models.kafka.UsersQueryParams;
 import musico.services.databases.repositories.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -41,5 +42,12 @@ public class UserService {
                 .amazonMusic(user.amazonMusic())
                 .build();
         userRepository.save(userToSave);
+    }
+
+    public List<Users> getUserProfileParams(Integer minAge, Integer maxAge, String gender) {
+        // Transform age in birthdate
+        LocalDate minBirthdate = LocalDate.now().minusYears(maxAge);
+        LocalDate maxBirthdate = LocalDate.now().minusYears(minAge);
+        return userRepository.findAllByBirthdateBetween(minBirthdate, maxBirthdate);
     }
 }

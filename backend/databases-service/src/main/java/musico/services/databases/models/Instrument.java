@@ -46,7 +46,7 @@ public class Instrument implements OntEntity {
     public IRI getIRI() {
         Namespace musinco = OntologyModel.getNamespace("");
         assert musinco != null;
-        return Values.iri(musinco.getName() + "Instrument/" + id);
+        return Values.iri(musinco.getName() + "Instruments/" + id);
     }
 
     @Override

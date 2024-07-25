@@ -24,8 +24,6 @@ public class TestController {
     @GetMapping(path = "/prova")
     @ResponseBody
     public ResponseEntity<String> test() {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Type", "application/json");
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             log.info("Principal: {}", authentication.getPrincipal());

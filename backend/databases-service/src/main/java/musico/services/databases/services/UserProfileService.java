@@ -4,16 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import musico.services.databases.enums.REGISTRATION_ENUMS;
 import musico.services.databases.models.Users;
+import musico.services.databases.models.kafka.UserSearchParams;
 import musico.services.databases.models.kafka.UsersQueryParams;
 import musico.services.databases.services.kafka.UsersQueryParamsService;
 import musico.services.databases.utils.DataRetriever;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.GraphPatternNotTriples;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.TriplePattern;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -97,4 +99,53 @@ public class UserProfileService {
         }
         return response;
     }
+
+    public List<UsersQueryParams> searchUsers(UserSearchParams params){
+        List<UsersQueryParams> response = new ArrayList<>();
+        List<Users> resultSQL = userService.getUserProfileParams(params.minAge(), params.maxAge(), params.gender());
+        if(resultSQL.isEmpty()){
+            log.error("No results found for search in SQL: {}", params);
+            return response;
+        }
+        log.info("SQL Results found for search: {}", resultSQL);
+        UsersQueryParams usersQueryParams = UsersQueryParams.builder()
+                .genres(params.genres())
+                .instruments(params.instruments())
+                .build();
+        GraphPatternNotTriples userQuery = usersQueryParamsService.buildQueryGraphPattern(usersQueryParams);
+        List<BindingSet> results = dataRetriever.createAndExecuteSelectQuery(userQuery);
+        if (results == null){
+            log.error("No results found for search in Graph: {}", params);
+            return response;
+        }
+
+        resultSQL = resultSQL.stream()
+        .filter(users -> results.stream()
+                .anyMatch(bindingSet -> bindingSet.getValue("user").stringValue().contains(users.getUserId())))
+                .toList();
+        log.info("Filtered SQL Results found for search: {}", resultSQL);
+        for (Users user :  resultSQL){
+            GraphPatternNotTriples userQuerySQL = usersQueryParamsService.buildQueryGraphPattern(UsersQueryParams.builder().userId(user.getUserId()).build());
+            List<BindingSet> resultsSQL = dataRetriever.createAndExecuteSelectQuery(userQuerySQL);
+            UsersQueryParams.UsersQueryParamsBuilder builder = usersQueryParamsService.getResponseMessageFromQueryResults(resultsSQL);
+            builder.userId(user.getUserId())
+                    .username(user.getUsername())
+                    .firstName(user.getFirstName())
+                    .surname(user.getLastName())
+                    .amazonMusic(user.getAmazonMusic())
+                    .appleMusic(user.getAppleMusic())
+                    .birthdate(user.getBirthdate())
+                    .description(user.getDescription())
+                    .profilePicturePath(user.getProfilePicturePath())
+                    .soundcloud(user.getSoundcloud())
+                    .spotify(user.getSpotify())
+                    .tidal(user.getTidal())
+                    .youtube(user.getYoutube());
+            response.add(builder.build());
+        }
+        // Join the results from SQL and RDF
+
+        return response;
+    }
+
 }

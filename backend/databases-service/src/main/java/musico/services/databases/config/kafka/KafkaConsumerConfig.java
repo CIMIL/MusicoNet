@@ -2,6 +2,7 @@ package musico.services.databases.config.kafka;
 
 import lombok.RequiredArgsConstructor;
 import musico.services.databases.models.kafka.MusicalWorkQueryParams;
+import musico.services.databases.models.kafka.UserSearchParams;
 import musico.services.databases.models.kafka.UsersQueryParams;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -76,6 +77,32 @@ public class KafkaConsumerConfig {
         factory.setConsumerFactory(usersQueryParamsConsumerFactory());
         factory.setReplyTemplate(usersQueryParamsTemplate);
         return factory;
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, UserSearchParams> userSearchParamsListener() {
+        ConcurrentKafkaListenerContainerFactory<String, UserSearchParams> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(userSearchParamsConsumerFactory());
+        factory.setReplyTemplate(usersQueryParamsTemplate);
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, UserSearchParams> userSearchParamsConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        // Add trusted package for deserialization
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        props.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapAddress);
+        props.put(
+                ConsumerConfig.GROUP_ID_CONFIG,
+                "database-service");
+        props.put(
+                ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS,
+                JsonDeserializer.class.getName()
+        );
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(UserSearchParams.class));
     }
 
 }

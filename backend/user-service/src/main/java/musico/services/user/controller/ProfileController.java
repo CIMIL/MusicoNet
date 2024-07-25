@@ -129,7 +129,7 @@ public class ProfileController {
         try {
             ProfilePicture profilePicture = storageService.getAudio(principal.getUserPrincipal().getName());
             return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType("audio/mpeg"))
+                    .contentType(MediaType.parseMediaType("audio/mp3"))
                     .headers(headers -> headers.setContentDispositionFormData("attachment", "audio.mp3"))
                     .body(new ByteArrayResource(profilePicture.getImage()));
 

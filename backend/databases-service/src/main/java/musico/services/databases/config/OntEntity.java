@@ -50,7 +50,6 @@ public interface OntEntity {
                                                 )
                                         )
                                 );
-
                             } else {
                                 res.add(
                                         GraphPatterns.tp(
@@ -102,7 +101,7 @@ public interface OntEntity {
             field.setAccessible(true);
             OntEntityField annotation = field.getAnnotation(OntEntityField.class);
             try {
-                // TODO: Make it better
+                // TODO: Hey Jude, Make it better
                 if (annotation != null && field.get(clazz) != null) {
                     if (field.get(clazz) instanceof Set<?>) {
                         if (!((Set<?>) field.get(clazz)).isEmpty()) {
@@ -136,7 +135,7 @@ public interface OntEntity {
                                                 GraphPatterns.tp(
                                                         obj,
                                                         Values.iri(Objects.requireNonNull(OntologyModel.getPredicate("schema1:name"))),
-                                                        SparqlBuilder.var(obj.stringValue() + "_name")
+                                                        SparqlBuilder.var(field.getName() + "_name")
                                                 )
                                         );
                                     }

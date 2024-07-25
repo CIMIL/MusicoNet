@@ -1,5 +1,6 @@
 package musico.services.user.config.kafka;
 
+import musico.services.user.models.UserParams;
 import musico.services.user.models.UserProfileDTO;
 import org.apache.catalina.User;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -20,6 +21,7 @@ import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Configuration
@@ -86,5 +88,58 @@ public class KafkaProducerConfig {
     public JsonMessageConverter jsonMessageConverter() {
         return new ByteArrayJsonMessageConverter();
     }
+
+    @Bean
+    public ReplyingKafkaTemplate<String, UserParams, List<UserProfileDTO> > searchReplyingKafkaTemplate(
+            ProducerFactory<String, UserParams> pf,
+            ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> repliesContainer) {
+        ReplyingKafkaTemplate<String, UserParams, List<UserProfileDTO>> replyTemplate = new ReplyingKafkaTemplate<>(pf, repliesContainer);
+        replyTemplate.setDefaultReplyTimeout(Duration.ofSeconds(10));
+        replyTemplate.setSharedReplyTopic(true);
+        return replyTemplate;
+    }
+
+    @Bean
+    public ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> searchListenerContainer(
+            ConcurrentKafkaListenerContainerFactory<String, List<UserProfileDTO>> containerFactory) {
+        containerFactory.setRecordMessageConverter(jsonMessageConverter());
+        containerFactory.setConsumerFactory(searchConsumerFactory());
+        ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> repliesContainer = containerFactory.createContainer("user-search-response");
+        repliesContainer.getContainerProperties().setGroupId("search-reply-group");
+        return repliesContainer;
+    }
+
+    @Bean
+    public ConsumerFactory<String, List<UserProfileDTO>> searchConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        props.put(
+                JsonDeserializer.TRUSTED_PACKAGES,
+                "*");
+        props.put(
+                "group.id",
+                "user-service"
+        );
+        props.put(
+                "bootstrap.servers",
+                bootstrapAddress);
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(List.class));
+    }
+
+    @Bean
+    public ProducerFactory<String, UserParams> producerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        JsonSerializer<UserParams> serializer = new JsonSerializer<>();
+        serializer.setAddTypeInfo(false);
+        configProps.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapAddress);
+        configProps.put(
+                DelegatingSerializer.VALUE_SERIALIZATION_SELECTOR,
+                "UserParams,org.springframework.kafka.support.serializer.JsonSerializer"
+        );
+        return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
+    }
+
+
 
 }

@@ -1,14 +1,13 @@
 import { View, Text } from 'react-native';
 import { React, useState, useEffect, useContext } from 'react';
-import FormField from '../../../../components/FormField';
-import Button from '../../../../components/Button';
-import AutocompleteField from '../../../../components/AutocompleteField';
-import GenreCard from '../../../../components/GenreCard';
-import { AuthContext } from '../../../../context/authContext';
+import FormField from '../../../components/FormField';
+import Button from '../../../components/Button';
+import AutocompleteField from '../../../components/AutocompleteField';
+import GenreCard from '../../../components/GenreCard';
+import { AuthContext } from '../../../context/authContext';
 
 const GenresSection = ({ user, setUser }) => {
   const { state } = useContext(AuthContext);
-
   const [genre, setGenre] = useState('');
   const [genresList, setgenresList] = useState([]);
 
@@ -22,9 +21,7 @@ const GenresSection = ({ user, setUser }) => {
         },
       });
       const data = await response.json().then((data) => {
-        console.log('FETCH genres: ', data);
         setgenresList(data);
-        console.log('genres list: ', genresList);
       });
     } catch (e) {
       console.log('Error fetching genres: ', e);

@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import { useState } from 'react';
-import FormField from '../../../../components/FormField';
+import FormField from '../../../components/FormField';
 import DatePicker from 'react-native-date-picker';
 
 const GeneralInfoSection = ({ user, setUser }) => {

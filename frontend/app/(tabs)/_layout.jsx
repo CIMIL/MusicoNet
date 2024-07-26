@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import React from 'react';
-import { Tabs } from 'expo-router';
+import { Stack, Tabs } from 'expo-router';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -47,7 +47,7 @@ const TabsLayout = () => {
         }}
       >
         <Tabs.Screen
-          name="home"
+          name={'home'}
           options={{
             title: 'Feed',
             headerShown: false,
@@ -57,6 +57,7 @@ const TabsLayout = () => {
             ),
           }}
         />
+
         <Tabs.Screen
           name="events"
           options={{

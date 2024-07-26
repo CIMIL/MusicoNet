@@ -1,6 +1,6 @@
-import { router, Slot, SplashScreen } from 'expo-router';
+import { Slot, SplashScreen } from 'expo-router';
 import { useFonts } from 'expo-font';
-import { AuthProvider } from '../context/authContext';
+import { AuthContext, AuthProvider } from '../context/authContext';
 import 'react-native-reanimated';
 import React, { useEffect } from 'react';
 

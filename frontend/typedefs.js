@@ -16,6 +16,7 @@
  * @property {Boolean} isSignedIn
  * @property {String | null} accessToken
  * @property {String | null} idToken
+ * @property {String | null} refreshToken
  * @property {UserInfo | null} userInfo
  */
 
@@ -34,4 +35,4 @@
  * @property {String} redirectUri
  */
 
-exports.unused = {}
+exports.unused = {};

@@ -1,11 +1,11 @@
 import { View, Text, KeyboardAvoidingView, Platform } from 'react-native';
 import { React, useState, useEffect, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import FormField from '../../../../components/FormField';
-import Button from '../../../../components/Button';
-import AutocompleteField from '../../../../components/AutocompleteField';
-import InstrumentCard from '../../../../components/InstrumentCard';
-import { AuthContext } from '../../../../context/authContext';
+import FormField from '../../../components/FormField';
+import Button from '../../../components/Button';
+import AutocompleteField from '../../../components/AutocompleteField';
+import InstrumentCard from '../../../components/InstrumentCard';
+import { AuthContext } from '../../../context/authContext';
 
 const PlayedInstrumentsSection = ({ user, setUser }) => {
   const { state } = useContext(AuthContext);
@@ -23,9 +23,7 @@ const PlayedInstrumentsSection = ({ user, setUser }) => {
         },
       });
       const data = await response.json().then((data) => {
-        console.log('FETCH INSTRUMENTS: ', data);
         setinstrumentsList(data);
-        console.log('Instruments list: ', instrumentsList);
       });
     } catch (e) {
       console.log('Error fetching instruments: ', e);

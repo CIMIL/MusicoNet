@@ -11,13 +11,12 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { StatusBar } from 'expo-status-bar';
-import { AuthContext } from '../../../context/authContext';
+import { AuthContext } from '../../context/authContext';
 import AnimatedLoader from 'react-native-animated-loader';
 import { router } from 'expo-router';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = () => {
-  const { signIn, checkUserProfile, state } = useContext(AuthContext);
+  const { signIn, getUserProfile, state } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSignIn = async () => {
@@ -25,6 +24,14 @@ const SignIn = () => {
     try {
       console.log('Starting sign-in process...');
       const signInResult = await signIn();
+      const { exists } = await getUserProfile();
+      if (exists) {
+        console.log('User exists');
+        router.replace('home');
+      } else {
+        console.log('User does not exist');
+        router.replace('signup');
+      }
     } catch (error) {
       console.error('Sign-in error:', error);
     } finally {
@@ -32,43 +39,34 @@ const SignIn = () => {
     }
   };
 
-  const handleCheckUserProfile = async () => {
-    const { exists } = await checkUserProfile();
-    console.log('User profile exists:', exists);
-
-    if (exists) {
-      console.log('Navigating to home...');
-      router.replace('home');
-    } else {
-      console.log('Navigating to signup...');
-      router.replace('signup');
-    }
-  };
-
   useEffect(() => {
-    console.log('Checking user profile...');
-    if (state.isSignedIn) handleCheckUserProfile();
-  }, [state.isSignedIn]);
+    handleSignIn();
+  }, []);
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <AnimatedLoader
-          visible={true}
-          source={require('../../../assets/load_animation.json')}
-          animationStyle={{ width: 300, height: 300 }}
-          speed={0.5}
-        >
-          <Text className="text-text font-semibold text-lg">Loading...</Text>
-        </AnimatedLoader>
-      </View>
+      <ImageBackground
+        source={require('../../assets/images/splashscreen.png')}
+        className="h-full w-full"
+      >
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <AnimatedLoader
+            visible={true}
+            source={require('../../assets/load_animation.json')}
+            animationStyle={{ width: 300, height: 300 }}
+            speed={0.5}
+          >
+            <Text className="text-text font-semibold text-lg">Loading...</Text>
+          </AnimatedLoader>
+        </View>
+      </ImageBackground>
     );
   }
 
   return (
     <>
       <ImageBackground
-        source={require('../../../assets/images/splashscreen.png')}
+        source={require('../../assets/images/splashscreen.png')}
         className="h-full w-full"
       >
         <TouchableWithoutFeedback className="h-full w-full" onPress={Keyboard.dismiss}>
@@ -78,10 +76,7 @@ const SignIn = () => {
           >
             <SafeAreaView className="h-full bg-background">
               <View className="flex-1 justify-center items-center">
-                <TouchableOpacity
-                  onPress={handleSignIn}
-                  className="bg-primary py-3 px-6 rounded-full"
-                >
+                <TouchableOpacity onPress={signIn} className="bg-primary py-3 px-6 rounded-full">
                   <Text className="text-white font-semibold text-lg">Sign In</Text>
                 </TouchableOpacity>
               </View>

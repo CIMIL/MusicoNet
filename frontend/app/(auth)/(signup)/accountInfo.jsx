@@ -1,6 +1,6 @@
 import { View, KeyboardAvoidingView, Platform, Text } from 'react-native';
 import { React, useState } from 'react';
-import FormField from '../../../../components/FormField';
+import FormField from '../../../components/FormField';
 import CheckBox from '@react-native-community/checkbox';
 
 const AccountInfoSection = ({ user, setUser }) => {

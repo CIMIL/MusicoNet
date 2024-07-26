@@ -35,7 +35,9 @@ yarn-error.*
 *.tsbuildinfo
 
 # build output
+android/
 Musico.app/
+ios/
 *.apk
 
 # tar.gz files

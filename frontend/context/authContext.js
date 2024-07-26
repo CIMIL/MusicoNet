@@ -1,19 +1,13 @@
-// @ts-check
 import React, { createContext, useEffect, useMemo, useReducer } from 'react';
-import { makeRedirectUri, useAuthRequest, useAutoDiscovery } from 'expo-auth-session';
+import { useAuthRequest, useAutoDiscovery } from 'expo-auth-session';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as SecureStore from 'expo-secure-store';
-// eslint-disable-next-line no-unused-vars
-import typedefs from './../typedefs.js';
-import { router } from 'expo-router';
+import { get } from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
-/**
- * @type {typedefs.AuthState}
- */
 const initialState = {
   isSignedIn: false,
   accessToken: null,
   idToken: null,
+  refreshToken: null,
   userInfo: null,
 };
 
@@ -22,17 +16,15 @@ const AuthContext = createContext({
   signIn: () => {},
   signOut: () => {},
   refreshToken: async () => {},
-  checkUserProfile: async () => {},
-  hasRole: (role) => false,
+  getUserProfile: async () => {},
+  getKeyclockUserInfo: async () => {},
 });
 
 const AuthProvider = ({ children }) => {
-  // @ts-ignore
   const discovery = useAutoDiscovery(process.env.EXPO_PUBLIC_KEYCLOAK_URL);
-  const redirectUri = 'myapp://redirect';
+  const redirectUri = 'myapp://signin';
   const [request, response, promptAsync] = useAuthRequest(
     {
-      // @ts-ignore
       clientId: process.env.EXPO_PUBLIC_KEYCLOAK_CLIENT_ID,
       redirectUri: redirectUri,
       scopes: ['openid', 'profile'],
@@ -48,17 +40,17 @@ const AuthProvider = ({ children }) => {
           isSignedIn: true,
           accessToken: action.payload.access_token,
           idToken: action.payload.id_token,
+          refreshToken: action.payload.refresh_token,
         };
       case 'USER_INFO':
         return {
           ...previousState,
-          userInfo: {
-            username: action.payload.preferred_username,
-            givenName: action.payload.given_name,
-            familyName: action.payload.family_name,
-            email: action.payload.email,
-            roles: action.payload.roles,
-          },
+          userInfo: action.payload,
+        };
+      case 'KEYCLOCK_USER_INFO':
+        return {
+          ...previousState,
+          keyclockUserInfo: action.payload,
         };
       case 'SIGN_OUT':
         return {
@@ -66,6 +58,16 @@ const AuthProvider = ({ children }) => {
         };
     }
   }, initialState);
+
+  const storeTokens = async (accessToken, refreshToken) => {
+    try {
+      await AsyncStorage.setItem('accessToken', accessToken);
+      await AsyncStorage.setItem('refreshToken', refreshToken);
+      console.log('Tokens stored successfully');
+    } catch (error) {
+      console.error('Error storing tokens:', error);
+    }
+  };
 
   const getToken = async ({ code, codeVerifier, redirectUri }) => {
     try {
@@ -75,6 +77,7 @@ const AuthProvider = ({ children }) => {
         code: code,
         code_verifier: codeVerifier,
         redirect_uri: redirectUri,
+        scope: 'openid offline_access',
       };
       const formBody = [];
       for (const property in formData) {
@@ -82,7 +85,7 @@ const AuthProvider = ({ children }) => {
         var encodedValue = encodeURIComponent(formData[property]);
         formBody.push(encodedKey + '=' + encodedValue);
       }
-
+      console.log('BODDDY', formBody);
       const response = await fetch(
         `${process.env.EXPO_PUBLIC_KEYCLOAK_URL}/protocol/openid-connect/token`,
         {
@@ -96,13 +99,13 @@ const AuthProvider = ({ children }) => {
       );
       if (response.ok) {
         const payload = await response.json();
-        console.log('TOKEN: ', payload);
-        await AsyncStorage.setItem('accessToken', JSON.stringify(payload.access_token));
-        await SecureStore.setItemAsync('refreshToken', payload.refresh_token);
+        console.log('TOKEN ', payload);
+        await storeTokens(payload.access_token, payload.refresh_token);
+        // @ts-ignore
         dispatch({ type: 'SIGN_IN', payload });
       }
     } catch (e) {
-      console.warn(e);
+      console.warn('Error in getToken:', e);
     }
   };
 
@@ -113,22 +116,18 @@ const AuthProvider = ({ children }) => {
         try {
           console.log('Prompting for authentication...');
           const result = await promptAsync();
-          console.log('Auth prompt result:', result);
 
           if (result.type === 'success') {
             const { code } = result.params;
             console.log('Obtaining token...');
-            const tokenSuccess = await getToken({
+            await getToken({
               code,
               codeVerifier: request?.codeVerifier,
               redirectUri,
             });
-            console.log('Token obtained:', tokenSuccess);
-
-            if (tokenSuccess) {
-              console.log('Sign-in successful');
-              return true;
-            }
+            await authContext.getUserProfile();
+            await authContext.getKeyclockUserInfo();
+            return true;
           }
           console.log('Sign-in unsuccessful');
           return false;
@@ -137,26 +136,26 @@ const AuthProvider = ({ children }) => {
           return false;
         }
       },
-
       signOut: async () => {
         try {
           const idToken = authState.idToken;
           await fetch(
             `${process.env.EXPO_PUBLIC_KEYCLOAK_URL}/protocol/openid-connect/logout?id_token_hint=${idToken}`
           );
-          await AsyncStorage.clear(); // <-- Remove tokens from AsyncStorage on sign-out
-          // @ts-ignore
+          await AsyncStorage.removeItem('accessToken');
+          await AsyncStorage.removeItem('refreshToken');
           dispatch({ type: 'SIGN_OUT' });
+          console.log('Signed out and tokens cleared');
         } catch (e) {
-          console.warn(e);
+          console.warn('Error in signOut:', e);
         }
       },
       refreshToken: async () => {
         try {
           console.log('Refreshing token...');
-          const refreshToken = await SecureStore.getItemAsync('refreshToken');
-          console.log('REFRESH TOKEN: ', refreshToken);
-          if (!refreshToken) {
+          const rfToken = await AsyncStorage.getItem('refreshToken');
+          if (!rfToken) {
+            console.log('No refresh token found');
             return false;
           }
 
@@ -170,39 +169,38 @@ const AuthProvider = ({ children }) => {
               body: new URLSearchParams({
                 grant_type: 'refresh_token',
                 client_id: process.env.EXPO_PUBLIC_KEYCLOAK_CLIENT_ID,
-                refresh_token: refreshToken,
+                refresh_token: rfToken,
               }).toString(),
             }
           );
 
           if (response.ok) {
             const payload = await response.json();
-            await AsyncStorage.setItem('accessToken', payload.access_token);
-            await SecureStore.setItemAsync('refreshToken', payload.refresh_token);
+            await storeTokens(payload.access_token, payload.refresh_token);
             dispatch({ type: 'SIGN_IN', payload });
             return true;
           }
+          console.log('Token refresh failed');
           return false;
         } catch (error) {
           console.error('Error refreshing token:', error);
           return false;
         }
       },
-      checkUserProfile: async () => {
+      getUserProfile: async () => {
         try {
           const accessToken = await AsyncStorage.getItem('accessToken');
+          const formattedAccessToken = accessToken?.replace(/^"(.*)"$/, '$1');
           const response = await fetch('http://204.216.223.231:8080/user/profile/get', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json',
-              Authorization: 'Bearer ' + accessToken.replace(/^"(.*)"$/, '$1'),
+              Authorization: 'Bearer ' + formattedAccessToken,
             },
           });
-          console.log('PROFILE RESPONSE: ', response);
           if (response.ok) {
             const data = await response.json();
-            // Store profile data if needed
-            // await AsyncStorage.setItem('userProfile', JSON.stringify(data));
+            dispatch({ type: 'USER_INFO', payload: data });
             return { exists: true, data };
           } else {
             return { exists: false };
@@ -212,16 +210,45 @@ const AuthProvider = ({ children }) => {
           return { exists: false, error };
         }
       },
-      hasRole: (role) => authState.userInfo?.roles.indexOf(role) != -1,
+      getKeyclockUserInfo: async () => {
+        try {
+          const accessToken = authState.accessToken;
+          console.log(accessToken);
+          const response = await fetch(
+            `${process.env.EXPO_PUBLIC_KEYCLOAK_URL}/protocol/openid-connect/userinfo`,
+            {
+              method: 'GET',
+              headers: {
+                Authorization: 'Bearer ' + accessToken,
+                ContentType: 'application/json',
+              },
+            }
+          );
+          if (response.ok) {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+              const payload = await response.json();
+              console.log('Keycloak user info:', payload);
+              dispatch({ type: 'KEYCLOAK_USER_INFO', payload });
+              return payload;
+            } else {
+              console.error('Expected JSON response, but got:', contentType);
+              throw new Error('Invalid response format');
+            }
+          } else {
+            const errorText = await response.text();
+            console.error('Error response:', errorText);
+            throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
+          }
+        } catch (e) {
+          console.warn(e);
+        }
+      },
     }),
-    [authState, promptAsync]
+    [authState, promptAsync, request?.codeVerifier]
   );
 
-  /**
-   * Get access-token when authorization-code is available
-   */
   useEffect(() => {
-    //console.log(response);
     if (response?.type === 'success') {
       const { code } = response.params;
       getToken({
@@ -233,63 +260,20 @@ const AuthProvider = ({ children }) => {
       console.warn('Authentication error: ', response.error);
     } else if (response?.type === 'cancel') {
       console.log('Authentication dismissed');
-      //wait 0.5 seconds before prompting again
       setTimeout(() => {
         promptAsync();
       }, 500);
     }
   }, [dispatch, redirectUri, request?.codeVerifier, response]);
 
-  /**
-   * Get user-info when signing in completed
-   */
   useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const accessToken = authState.accessToken;
-        const response = await fetch(
-          `${process.env.EXPO_PUBLIC_KEYCLOAK_URL}/protocol/openid-connect/userinfo`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: 'Bearer ' + accessToken,
-              Accept: 'application/json',
-            },
-          }
-        );
-        if (response.ok) {
-          const payload = await response.json();
-          // @ts-ignore
-          dispatch({ type: 'USER_INFO', payload });
-        }
-      } catch (e) {
-        console.warn(e);
-      }
-    };
     if (authState.isSignedIn) {
-      getUserInfo();
+      authContext.getKeyclockUserInfo();
+      authContext.getUserProfile();
     }
   }, [authState.accessToken, authState.isSignedIn, dispatch]);
 
-  useEffect(() => {
-    const checkStoredTokens = async () => {
-      const storedTokens = await AsyncStorage.getItem('accessToken'); // <-- Check for stored tokens when the component mounts
-      if (storedTokens) {
-        const payload = JSON.parse(storedTokens);
-        dispatch({ type: 'SIGN_IN', payload });
-      }
-    };
-    checkStoredTokens();
-  }, []);
-
-  return (
-    <AuthContext.Provider
-      // @ts-ignore
-      value={authContext}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>;
 };
 
 export { AuthContext, AuthProvider };

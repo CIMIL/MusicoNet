@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { TextInput } from 'react-native';
 import { Image } from 'react-native-elements';
 
-import youtubeIcon from '../../../../assets/images/platformIcons/youtube.png';
-import spotifyIcon from '../../../../assets/images/platformIcons/spotify.png';
-import appleMusicIcon from '../../../../assets/images/platformIcons/applemusic.jpg';
-import tidalIcon from '../../../../assets/images/platformIcons/tidal.jpeg';
-import soundcloudIcon from '../../../../assets/images/platformIcons/soundcloud.png';
-import amazonMusicIcon from '../../../../assets/images/platformIcons/amazonmusic.png';
+import youtubeIcon from '../../../assets/images/platformIcons/youtube.png';
+import spotifyIcon from '../../../assets/images/platformIcons/spotify.png';
+import appleMusicIcon from '../../../assets/images/platformIcons/applemusic.jpg';
+import tidalIcon from '../../../assets/images/platformIcons/tidal.jpeg';
+import soundcloudIcon from '../../../assets/images/platformIcons/soundcloud.png';
+import amazonMusicIcon from '../../../assets/images/platformIcons/amazonmusic.png';
 
 const OtherPlatformsSection = ({ user, setUser }) => {
   const platformData = [

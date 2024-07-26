@@ -1,8 +1,8 @@
 import { View, Text, ScrollView } from 'react-native';
 import React from 'react';
-import FileButton from '../../../../components/FileButton';
-import AudioCard from '../../../../components/AudioCard';
-import AudioUpload from '../../../../components/AudioUpload';
+import FileButton from '../../../components/FileButton';
+import AudioCard from '../../../components/AudioCard';
+import AudioUpload from '../../../components/AudioUpload';
 
 const UploadMusicSection = ({ user, setUser }) => {
   const handleDeleteAudio = (index) => {

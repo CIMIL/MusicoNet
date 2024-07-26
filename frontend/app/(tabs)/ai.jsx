@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Animated, Image } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 //import osc from 'expo-osc';
@@ -38,6 +38,28 @@ const Ai = () => {
 Mood: ${songAnalysis.mood}
 BPM: ${songAnalysis.bpm}
 Danceability: ${songAnalysis.danceability.toFixed(2)}`;
+
+  const result = [
+    {
+      amazonMusic: null,
+      appleMusic: null,
+      birthdate: [2000, 4, 10],
+      description:
+        'Lead vocalist of Led Zeppelin, known for his powerful voice and charismatic performances.',
+      firstName: null,
+      genres: ['Rock'],
+      instruments: ['Trumpet'],
+      profilePicturePath: null,
+      requestID: null,
+      soundcloud: null,
+      spotify: null,
+      surname: null,
+      tidal: null,
+      userId: 'test_19c5dfd5-1cbf-4020-aa40-6f511b5a201e',
+      username: 'Robert Plant',
+      youtube: null,
+    },
+  ];
 
   useEffect(() => {
     return sound
@@ -237,20 +259,30 @@ Danceability: ${songAnalysis.danceability.toFixed(2)}`;
       {analysisType === '' ? (
         <>
           <AudioUpload />
-          <TouchableOpacity
-            onPress={() => {
-              connect();
-            }}
-          >
-            <Text className="text-text">TEst</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              disconnect();
-            }}
-          >
-            <Text className="text-text">Detest</Text>
-          </TouchableOpacity>
+
+          {
+            //replace true with false to hide debug buttons
+            true && (
+              <View className="flex-row">
+                <TouchableOpacity
+                  className="bg-primary-default p-2 rounded-2xl mt-2 flex-row justify-between items-center"
+                  onPress={() => {
+                    connect();
+                  }}
+                >
+                  <Text className="text-text">Socket connect</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  className="bg-primary-default p-2 rounded-2xl mt-2 ml-2 flex-row justify-between items-center"
+                  onPress={() => {
+                    disconnect();
+                  }}
+                >
+                  <Text className="text-text">Socket disconnect</Text>
+                </TouchableOpacity>
+              </View>
+            )
+          }
         </>
       ) : null}
 
@@ -322,6 +354,28 @@ Danceability: ${songAnalysis.danceability.toFixed(2)}`;
           </View>
         </Animated.View>
       )}
+      {!queryResult &&
+        //replace results with queryResult when soket is ok
+        result.map((result, index) => (
+          <View
+            key={index}
+            className="bg-primary-opacity25 rounded-2xl p-4 mb-4 flex-row items-center"
+          >
+            <View className="mr-4">
+              <Image
+                source={require('../../assets/images/blank_propic.png')}
+                className="h-16 w-16 rounded-xl"
+              />
+            </View>
+            <View className="">
+              <Text className="text-text font-pbold text-lg">{result.username}</Text>
+              <Text className="text-text font-pregular text-sm">{result.genres.join(', ')}</Text>
+              <Text className="text-text font-pregular text-sm">
+                {result.instruments.join(', ')}
+              </Text>
+            </View>
+          </View>
+        ))}
     </SafeAreaView>
   );
 };

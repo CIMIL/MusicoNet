@@ -4,6 +4,10 @@
 *.pp
 *.te
 *.pb
+env/
+data/
+secrets*
+*.bak*
 backend/essentia/essentia-service/env/
 backend/.idea
 ### Java ###

@@ -49,7 +49,9 @@ public class AnalysisListener {
             HashSet<String> alreadySent = new HashSet<>();
             for (BindingSet row : dataRetriever.createAndExecuteSelectQuery(query)) {
                 log.debug("Row: {}", row);
-                if (row.getValue("user").toString().contains("ex") || row.getValue("user").toString().contains(message.requestId())) {
+                if (row.getValue("user").toString().contains("ex") || row.getValue("user").toString().contains(message.requestId())
+                        || row.getValue("user").toString().contains("file")
+                ) {
                     continue;
                 }
                 String id = row.getValue("user").stringValue().split("/")[row.getValue("user").stringValue().split("/").length - 1];

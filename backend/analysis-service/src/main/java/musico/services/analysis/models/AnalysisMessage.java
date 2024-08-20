@@ -7,6 +7,8 @@ import lombok.ToString;
 @ToString
 public class AnalysisMessage {
     private String user;
-    private Integer beats;
+    private Integer bpm;
     private Float danceability;
+    private String [] genres;
+    private String mood;
 }

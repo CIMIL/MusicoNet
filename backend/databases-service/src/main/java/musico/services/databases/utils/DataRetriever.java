@@ -46,7 +46,7 @@ public class DataRetriever {
     public void createAndExecuteInsertQuery(List<TriplePattern> triples) {
         String query = Queries.INSERT_DATA().insertData(triples.toArray(new TriplePattern[0])).getQueryString();
         log.debug("Insert Query: {}", query);
-        executeInsertQuery(query);
+//        executeInsertQuery(query);
     }
 
     public List<BindingSet> createAndExecuteSelectQuery(GraphPatternNotTriples graphPattern, String... fields) {
@@ -67,7 +67,7 @@ public class DataRetriever {
         }
     }
 
-    private List<BindingSet> executeQuery(String query) {
+    public List<BindingSet> executeQuery(String query) {
         ArrayList<BindingSet> res = new ArrayList<>();
         TupleQuery tupleQuery = connection.prepareTupleQuery(query);
         try (TupleQueryResult result = tupleQuery.evaluate()) {

@@ -7,6 +7,8 @@ from flask import Flask, request, jsonify, Response
 from kafka import KafkaProducer
 from pprint import pprint
 from flask_restful import Api
+from pymongo import MongoClient
+import gridfs
 
 producer = KafkaProducer(bootstrap_servers='localhost:19092')
 from tempfile import TemporaryDirectory
@@ -31,17 +33,17 @@ metadata = {}
 with open('msd-musicnn-1.json', 'r') as json_file:
     metadata = json.load(json_file)
 
+db = MongoClient('mongodb://admin:admin@localhost:27017/').musico
+fs = gridfs.GridFS(db)
 
 def parse_auth_token(request):
     jwks_client = PyJWKClient('http://204.216.223.231:8082/realms/musico-realm/protocol/openid-connect/certs')
     data = request.headers['Authorization']
     token = str.replace(str(data), 'Bearer ', '')
 
-    print("Token:", token)
     signing_key = jwks_client.get_signing_key_from_jwt(token)
     singing_algos = ['RS256']
     data = jwt.decode(token, signing_key.key, algorithms=singing_algos, audience='account')
-    pprint(data)
     return data
 
 
@@ -75,12 +77,60 @@ def featurePrediction(audio_path):
     return bpm, key, scale, danceability
 
 
+def analyze_audio (file):
+ with TemporaryDirectory() as tmpdirname:
+    data = {}
+    file_path = tmpdirname + '/' + file.filename
+    file.save(file_path)
+    print("file_path:", file_path)
+    # Load the audio file
+    genres, mood = genreMoodPrediction(file_path)
+    bpm, key, scale, danceability = featurePrediction(file_path)
+
+    data["genres"] = [*genres.keys()]
+    # Get mood with max value
+    data['mood'] = max(mood, key=mood.get)
+    data['bpm'] = int(bpm)
+    data['danceability'] = danceability
+    data['tonality'] = {
+        'key': key,
+        'scale': scale
+    }
+    return data
+
+def check_audio_already_exists(username, file):
+    return fs.exists({"filename": username+"_audio"})
+
+@app.route('/audio/profile', methods=['POST'])
+def audio_profile():
+    username = parse_auth_token(request)['sub']
+    print("audio_profile():")
+    if 'file' not in request.files:
+        return Response("No file part", status=400, mimetype='application/json')
+    file = request.files['file']
+    if file.filename == '':
+        return Response("No selected file", status=400, mimetype='application/json')
+    # if check_audio_already_exists(username, file):
+    #     return Response("Audio already exists", status=400, mimetype='application/json') 
+    
+    data = analyze_audio(file)
+    data['requestId'] = username
+    pprint(data)
+    
+    # fs.put(file, filename=username+"_audio")
+    try:
+        producer.send("audio-profile",  bytes(json.dumps(data), 'utf-8'))
+        print("Sent to Kafka")
+    except Exception as e:
+        print("Error:", e)
+        return Response("Error: " + str(e), status=400, mimetype='application/json')    
+    return jsonify(str(data))
+
+
 @app.route('/audio/analysis', methods=['GET', 'POST'])
 def audio_analysis(file=None):
     username = parse_auth_token(request)['sub']
     print("audio_analysis():")
-    # Get the file from the request
-    data = {}
     if request.method == 'POST':
         if 'file' not in request.files:
             return Response("No file part", status=400, mimetype='application/json')
@@ -88,29 +138,14 @@ def audio_analysis(file=None):
         if file.filename == '':
             return Response("No selected file", status=400, mimetype='application/json')
         
-        with TemporaryDirectory() as tmpdirname:
-            file_path = tmpdirname + '/' + file.filename
-            file.save(file_path)
-            print("file_path:", file_path)
-            # Load the audio file
-            genres, mood = genreMoodPrediction(file_path)
-            bpm, key, scale, danceability = featurePrediction(file_path)
-            
-            data["genres"] = [*genres.keys()]
-            # Get mood with max value
-            data['mood'] = max(mood, key=mood.get)
-            data['bpm'] = int(bpm)
-            data['danceability'] = danceability
-            data['tonality'] = {
-                'key': key,
-                'scale': scale
-            }
-            data['requestId'] = username
-
+        data = analyze_audio(file)
+        audio_data = data.copy()
+        query_data = data.copy()
+        audio_data['user'] = username
+        query_data['requestId'] = username
         try:
-            # producer.send("audio_analysis",  bytes(str(data), 'utf-8'))
-            producer.send("analysis-query_params",  bytes(json.dumps(data), 'utf-8'))
-            producer.flush()
+            producer.send("audio_analysis",  bytes(json.dumps(audio_data), 'utf-8'))
+            producer.send("analysis-query_params",  bytes(json.dumps(query_data), 'utf-8'))
             print("Sent to Kafka")
         except Exception as e:
             print("Error:", e)

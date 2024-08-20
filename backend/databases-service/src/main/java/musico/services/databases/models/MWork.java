@@ -24,7 +24,7 @@ public class MWork implements OntEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "musical_work_id", nullable = false)
-    private Integer id;
+    private String id;
 
     @Size(max = 400)
     @NotNull

@@ -3,6 +3,7 @@ package musico.services.databases.services.kafka;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import musico.services.databases.config.OntEntity;
+import musico.services.databases.config.OntologyModel;
 import musico.services.databases.models.Genre;
 import musico.services.databases.models.Instrument;
 import musico.services.databases.models.Users;
@@ -61,6 +62,14 @@ public class UsersQueryParamsService {
                         GraphPatterns.tp(dataToQuery.getIRI(), RDF.TYPE, Values.iri(Users.getClassIRI()))
                 )
         );
+        List<TriplePattern> savedAudioMusParticipation = new ArrayList<>(
+                Collections.singletonList(
+                        GraphPatterns.tp(dataToQuery.getIRI(),
+                                Values.iri(Objects.requireNonNull(OntologyModel.getNamespace("musicoo")).getName() + "in_participation"),
+                                Values.iri(dataToQuery.getIRI() + "/audio_profile"))
+                )
+        );
+        res.addAll(savedAudioMusParticipation);
         res.addAll(dataToQuery.buildInsertQueryGraphPattern(dataToQuery));
         return res;
     }

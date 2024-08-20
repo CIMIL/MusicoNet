@@ -2,23 +2,19 @@ package musico.services.databases.listeners;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import musico.services.databases.models.Users;
 import musico.services.databases.models.kafka.MusicalWorkQueryParams;
 import musico.services.databases.models.kafka.UsersQueryParams;
 import musico.services.databases.services.UserProfileService;
 import musico.services.databases.services.kafka.MusicalWorkQueryParamsService;
-import musico.services.databases.services.kafka.UsersQueryParamsService;
 import musico.services.databases.utils.DataRetriever;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.GraphPatternNotTriples;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 @Component
 @Slf4j

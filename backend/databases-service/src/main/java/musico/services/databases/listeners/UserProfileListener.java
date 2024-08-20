@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import musico.services.databases.enums.REGISTRATION_ENUMS;
 import musico.services.databases.models.Users;
+import musico.services.databases.models.kafka.MusicalWorkQueryParams;
 import musico.services.databases.models.kafka.UsersQueryParams;
 import musico.services.databases.services.UserProfileService;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -41,6 +42,19 @@ public class UserProfileListener {
         // Create user profile on GraphDB
         userProfileService.createUserProfile(signupData);
     }
+
+    @KafkaListener(topics="audio-profile", groupId = "databases-service",
+            containerFactory = "musicalWorkQueryParamsListener")
+    public void listenAudioProfile(MusicalWorkQueryParams audioData) {
+        if (audioData == null) {
+            log.error("Received null audio profile request");
+            return;
+        }
+        log.info("Received audio profile request: {}", audioData);
+
+        userProfileService.addAudioData(audioData);
+    }
+
 
     @KafkaListener(topics = "profile-get", groupId = "databases-service",
             containerFactory = "usersQueryParamsListener")

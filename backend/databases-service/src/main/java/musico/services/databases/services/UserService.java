@@ -44,10 +44,23 @@ public class UserService {
         userRepository.save(userToSave);
     }
 
-    public List<Users> getUserProfileParams(Integer minAge, Integer maxAge, String gender) {
-        // Transform age in birthdate
+    /**
+     * Retrieves a list of user profiles based on the provided search parameters.
+     *
+     * @param username the username to search for, can be null or empty
+     * @param minAge   the minimum age of the users to search for
+     * @param maxAge   the maximum age of the users to search for
+     * @param gender   the gender of the users to search for (currently unused)
+     * @return a list of Users that match the search criteria
+     */
+    public List<Users> getUsersProfileParams(String username, Integer minAge, Integer maxAge, String gender) {
         LocalDate minBirthdate = LocalDate.now().minusYears(maxAge);
         LocalDate maxBirthdate = LocalDate.now().minusYears(minAge);
-        return userRepository.findAllByBirthdateBetween(minBirthdate, maxBirthdate);
+
+        if (username == null || username.isEmpty()) {
+            return userRepository.findAllByBirthdateBetween(minBirthdate, maxBirthdate);
+        } else {
+            return userRepository.findAllByBirthdateBetweenAndUsernameLike(minBirthdate, maxBirthdate, username);
+        }
     }
 }

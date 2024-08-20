@@ -4,18 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import musico.services.databases.enums.REGISTRATION_ENUMS;
 import musico.services.databases.models.Users;
+import musico.services.databases.models.kafka.MusicalWorkQueryParams;
 import musico.services.databases.models.kafka.UserSearchParams;
 import musico.services.databases.models.kafka.UsersQueryParams;
+import musico.services.databases.services.kafka.MusicalWorkQueryParamsService;
 import musico.services.databases.services.kafka.UsersQueryParamsService;
 import musico.services.databases.utils.DataRetriever;
 import org.eclipse.rdf4j.query.BindingSet;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.GraphPatternNotTriples;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.TriplePattern;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class UserProfileService {
     private final DataRetriever dataRetriever;
     private final UsersQueryParamsService usersQueryParamsService;
+    private final MusicalWorkQueryParamsService musicalWorkQueryParamsService;
     private final UserService userService;
 
     public REGISTRATION_ENUMS checkProfileAlreadyExists(UsersQueryParams userID) {
@@ -100,10 +101,10 @@ public class UserProfileService {
         return response;
     }
 
-    public List<UsersQueryParams> searchUsers(UserSearchParams params){
+    public List<UsersQueryParams> searchUsers(UserSearchParams params) {
         List<UsersQueryParams> response = new ArrayList<>();
-        List<Users> resultSQL = userService.getUserProfileParams(params.minAge(), params.maxAge(), params.gender());
-        if(resultSQL.isEmpty()){
+        List<Users> resultSQL = userService.getUsersProfileParams(params.username(), params.minAge(), params.maxAge(), params.gender());
+        if (resultSQL.isEmpty()) {
             log.error("No results found for search in SQL: {}", params);
             return response;
         }
@@ -114,17 +115,16 @@ public class UserProfileService {
                 .build();
         GraphPatternNotTriples userQuery = usersQueryParamsService.buildQueryGraphPattern(usersQueryParams);
         List<BindingSet> results = dataRetriever.createAndExecuteSelectQuery(userQuery);
-        if (results == null){
+        if (results == null) {
             log.error("No results found for search in Graph: {}", params);
             return response;
         }
-
         resultSQL = resultSQL.stream()
-        .filter(users -> results.stream()
-                .anyMatch(bindingSet -> bindingSet.getValue("user").stringValue().contains(users.getUserId())))
+                .filter(users -> results.stream()
+                        .anyMatch(bindingSet -> bindingSet.getValue("user").stringValue().contains(users.getUserId())))
                 .toList();
         log.info("Filtered SQL Results found for search: {}", resultSQL);
-        for (Users user :  resultSQL){
+        for (Users user : resultSQL) {
             GraphPatternNotTriples userQuerySQL = usersQueryParamsService.buildQueryGraphPattern(UsersQueryParams.builder().userId(user.getUserId()).build());
             List<BindingSet> resultsSQL = dataRetriever.createAndExecuteSelectQuery(userQuerySQL);
             UsersQueryParams.UsersQueryParamsBuilder builder = usersQueryParamsService.getResponseMessageFromQueryResults(resultsSQL);
@@ -144,8 +144,28 @@ public class UserProfileService {
             response.add(builder.build());
         }
         // Join the results from SQL and RDF
-
         return response;
     }
 
+
+    public void addAudioData(MusicalWorkQueryParams audioData) {
+        Users user = userService.getUserProfile(audioData.requestId());
+        // TODO: Check Max Number of Audio
+        String numberQuery = musicalWorkQueryParamsService.getCountAudioProfileQueryString(user);
+        log.debug("Number Query: {}", numberQuery);
+        List<BindingSet> results = dataRetriever.executeQuery(numberQuery);
+        if (results == null) {
+            log.error("Error getting number of audio profiles");
+            return;
+        }
+        int count = Integer.parseInt(results.get(0).getValue("count").stringValue());
+        if (count >= 5) {
+            log.error("Max number of audio profiles reached: {}", count);
+            return;
+        }else{
+            log.info("Number of audio profiles: {}", count);
+        }
+        List<TriplePattern> query = musicalWorkQueryParamsService.getSaveAudioProfileQuery(audioData, user);
+        dataRetriever.createAndExecuteInsertQuery(query);
+    }
 }

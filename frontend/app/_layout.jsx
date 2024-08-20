@@ -3,6 +3,7 @@ import { useFonts } from 'expo-font';
 import { AuthContext, AuthProvider } from '../context/authContext';
 import 'react-native-reanimated';
 import React, { useEffect } from 'react';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,9 +33,11 @@ const RootLayout = () => {
   }
 
   return (
-    <AuthProvider>
-      <Slot />
-    </AuthProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <AuthProvider>
+        <Slot />
+      </AuthProvider>
+    </GestureHandlerRootView>
   );
 };
 

@@ -11,13 +11,13 @@ const users = [
   {
     name: 'Christina Joe',
     username: 'christina.joe',
-    profilePicture: 'https://i.pravatar.cc/150?u=christina.joe',
+    profilePicture: 'https://i.pravatar.cc/150?u=Squinkis',
     location: 'New York',
     age: 25,
     mainInstrument: 'piano',
   },
   {
-    name: 'Angela Rossi',
+    name: 'Angelo Rossi',
     username: 'angyrossi76',
     profilePicture: 'https://i.pravatar.cc/150?u=angyrossi76',
     location: 'Los Angeles',
@@ -25,9 +25,9 @@ const users = [
     mainInstrument: 'headphones',
   },
   {
-    name: 'Luke Ferris',
+    name: 'Paula Garcia',
     username: 'ferris97',
-    profilePicture: 'https://i.pravatar.cc/150?u=ferris97',
+    profilePicture: 'https://i.pravatar.cc/150?u=aleruffo',
     location: 'Chicago',
     age: 27,
     mainInstrument: 'mic-external-on',

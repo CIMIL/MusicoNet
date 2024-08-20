@@ -42,7 +42,7 @@ export default function App() {
           console.log('No tokens found');
         }
       } catch (error) {
-        console.error('Error during token check and refresh:', error);
+        // //console.error('Error during token check and refresh:', error);
         await signOut(); // Clear tokens in case of error
       } finally {
         setIsLoading(false);

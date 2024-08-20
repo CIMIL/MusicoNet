@@ -65,7 +65,7 @@ const AuthProvider = ({ children }) => {
       await AsyncStorage.setItem('refreshToken', refreshToken);
       console.log('Tokens stored successfully');
     } catch (error) {
-      console.error('Error storing tokens:', error);
+      //console.error('Error storing tokens:', error);
     }
   };
 
@@ -105,7 +105,7 @@ const AuthProvider = ({ children }) => {
         dispatch({ type: 'SIGN_IN', payload });
       }
     } catch (e) {
-      console.warn('Error in getToken:', e);
+      //console.warn('Error in getToken:', e);
     }
   };
 
@@ -132,7 +132,7 @@ const AuthProvider = ({ children }) => {
           console.log('Sign-in unsuccessful');
           return false;
         } catch (error) {
-          console.error('Error during sign-in:', error);
+          //console.error('Error during sign-in:', error);
           return false;
         }
       },
@@ -147,7 +147,7 @@ const AuthProvider = ({ children }) => {
           dispatch({ type: 'SIGN_OUT' });
           console.log('Signed out and tokens cleared');
         } catch (e) {
-          console.warn('Error in signOut:', e);
+          //console.warn('Error in signOut:', e);
         }
       },
       refreshToken: async () => {
@@ -183,7 +183,7 @@ const AuthProvider = ({ children }) => {
           console.log('Token refresh failed');
           return false;
         } catch (error) {
-          console.error('Error refreshing token:', error);
+          //console.error('Error refreshing token:', error);
           return false;
         }
       },
@@ -206,7 +206,7 @@ const AuthProvider = ({ children }) => {
             return { exists: false };
           }
         } catch (error) {
-          console.error('Error fetching profile:', error);
+          //console.error('Error fetching profile:', error);
           return { exists: false, error };
         }
       },
@@ -232,16 +232,16 @@ const AuthProvider = ({ children }) => {
               dispatch({ type: 'KEYCLOAK_USER_INFO', payload });
               return payload;
             } else {
-              console.error('Expected JSON response, but got:', contentType);
+              //console.error('Expected JSON response, but got:', contentType);
               throw new Error('Invalid response format');
             }
           } else {
             const errorText = await response.text();
-            console.error('Error response:', errorText);
+            //console.error('Error response:', errorText);
             throw new Error(`HTTP error! status: ${response.status}, details: ${errorText}`);
           }
         } catch (e) {
-          console.warn(e);
+          //console.warn(e);
         }
       },
     }),
@@ -257,7 +257,7 @@ const AuthProvider = ({ children }) => {
         redirectUri,
       });
     } else if (response?.type === 'error') {
-      console.warn('Authentication error: ', response.error);
+      //console.warn('Authentication error: ', response.error);
     } else if (response?.type === 'cancel') {
       console.log('Authentication dismissed');
       setTimeout(() => {

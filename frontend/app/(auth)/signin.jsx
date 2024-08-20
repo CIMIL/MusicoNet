@@ -33,7 +33,7 @@ const SignIn = () => {
         router.replace('signup');
       }
     } catch (error) {
-      console.error('Sign-in error:', error);
+      // //console.error('Sign-in error:', error);
     } finally {
       setIsLoading(false);
     }

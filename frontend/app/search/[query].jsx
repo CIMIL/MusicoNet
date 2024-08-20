@@ -58,7 +58,7 @@ const Search = () => {
         const data = await response.json();
         setSearchResults(data);
       } else {
-        console.error('Errore nella risposta:', response.status, response.statusText);
+        //console.error('Errore nella risposta:', response.status, response.statusText);
       }
     } catch (e) {
       console.log('Error fetching instruments: ', e);

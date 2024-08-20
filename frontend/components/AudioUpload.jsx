@@ -21,17 +21,17 @@ const AudioUpload = () => {
       });
 
       if (result.assets) {
-        const { uri, name, size } = result.assets[0];
-        console.log('Audio file details: ', uri, name, size);
-        const fileType = name.split('.').pop();
-
+        console.log('Result: ', result.assets[0]);
+        let { uri, name, size, mimeType } = result.assets[0];
+        const file = await fetch(uri).then((response) => response.blob());
+        console.log('File: ', name);
+        const new_name = name + '.mp3';
         const formData = new FormData();
         formData.append('file', {
-          uri,
-          name,
-          type: `audio/${fileType}`,
+          uri: uri,
+          name: new_name,
+          type: mimeType,
         });
-
         await uploadAudio(formData);
       }
     } catch (error) {
@@ -41,36 +41,30 @@ const AudioUpload = () => {
 
   const uploadAudio = async (formData) => {
     setUploading(true);
-
     console.log('Uploading audio file...');
-    try {
-      const response = await axios.post(
-        'http://204.216.223.231:8080/audio/audio_analysis',
-        //'http://204.216.223.231:8080/user/profile/audio',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${state.accessToken}`,
-          },
-        }
-      );
+    console.log('Data: ', formData);
 
-      if (response.status === 200) {
-        setUploadStatus('File uploaded successfully!');
-        console.log('File uploaded successfully!');
-      } else {
-        setUploadStatus('File upload failed!');
-        console.log('File upload failed!');
-      }
-    } catch (error) {
-      console.log('Error uploading audio file: ', error);
-      setUploadStatus('File upload failed!');
-    } finally {
-      setUploading(false);
-    }
+    axios
+      .post('http://192.168.188.28:8080/audio/analysis', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${state.accessToken}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        console.log('Upload response: ', response.data);
+        setUploadStatus('success');
+        setUploading(false);
+      })
+      .catch((error) => {
+        // //console.error(error);
+        setUploading(false);
+      })
+      .finally(() => {
+        setUploading(false);
+      });
   };
-
   return (
     <View className="">
       {!uploading ? (

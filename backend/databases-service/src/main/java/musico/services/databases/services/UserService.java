@@ -53,7 +53,7 @@ public class UserService {
      * @param gender   the gender of the users to search for (currently unused)
      * @return a list of Users that match the search criteria
      */
-    public List<Users> getUsersProfileParams(String username, Integer minAge, Integer maxAge, String gender) {
+    public List<Users> getUsersOnSql(String username, Integer minAge, Integer maxAge, String gender) {
         LocalDate minBirthdate = LocalDate.now().minusYears(maxAge);
         LocalDate maxBirthdate = LocalDate.now().minusYears(minAge);
 

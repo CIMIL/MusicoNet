@@ -233,6 +233,37 @@ public interface OntEntity {
         return res;
     }
 
+    default TriplePattern getFieldTriplePattern(OntEntity clazz, Field field) {
+        field.setAccessible(true);
+        OntEntityField annotation = field.getAnnotation(OntEntityField.class);
+        try {
+            if (annotation != null && field.get(clazz) != null) {
+                switch (annotation.type()) {
+                    case OBJECT:
+                        IRI[] objs = getOntEntityIRIsArray(field.get(clazz));
+                        if (objs.length == 0) {
+                            return null;
+                        }
+                        return GraphPatterns.tp(
+                                clazz.getIRI(),
+                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
+                                objs
+                        );
+                    case DATA:
+                        Object objValue = field.get(clazz);
+                        return GraphPatterns.tp(
+                                clazz.getIRI(),
+                                Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
+                                Values.literal(objValue));
+                }
+            }
+        } catch (IllegalAccessException e) {
+            System.out.println("Error while accessing field: " + e.getMessage());
+        }
+        return null;
+
+    }
+
     private void genVariableDoubleEntityPattern(Object entity, List<GraphPatternNotTriples> patterns, Field field, OntEntityField annotation) {
         List<TriplePattern> optional = new ArrayList<>();
         if (entity instanceof Variable) {
@@ -283,7 +314,6 @@ public interface OntEntity {
             );
         }
     }
-
 
     private IRI[] getOntEntityIRIsArray(Object entitySet) {
     if (entitySet instanceof Set) {

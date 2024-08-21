@@ -2,6 +2,7 @@ package musico.services.databases.services;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import musico.services.databases.config.OntEntityField;
 import musico.services.databases.enums.REGISTRATION_ENUMS;
 import musico.services.databases.models.Users;
 import musico.services.databases.models.kafka.MusicalWorkQueryParams;
@@ -11,11 +12,17 @@ import musico.services.databases.services.kafka.MusicalWorkQueryParamsService;
 import musico.services.databases.services.kafka.UsersQueryParamsService;
 import musico.services.databases.utils.DataRetriever;
 import org.eclipse.rdf4j.query.BindingSet;
+import org.eclipse.rdf4j.sparqlbuilder.core.query.DeleteDataQuery;
+import org.eclipse.rdf4j.sparqlbuilder.core.query.InsertDataQuery;
+import org.eclipse.rdf4j.sparqlbuilder.core.query.Queries;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.GraphPatternNotTriples;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.TriplePattern;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -103,7 +110,7 @@ public class UserProfileService {
 
     public List<UsersQueryParams> searchUsers(UserSearchParams params) {
         List<UsersQueryParams> response = new ArrayList<>();
-        List<Users> resultSQL = userService.getUsersProfileParams(params.username(), params.minAge(), params.maxAge(), params.gender());
+        List<Users> resultSQL = userService.getUsersOnSql(params.username(), params.minAge(), params.maxAge(), params.gender());
         if (resultSQL.isEmpty()) {
             log.error("No results found for search in SQL: {}", params);
             return response;
@@ -147,7 +154,6 @@ public class UserProfileService {
         return response;
     }
 
-
     public void addAudioData(MusicalWorkQueryParams audioData) {
         Users user = userService.getUserProfile(audioData.requestId());
         // TODO: Check Max Number of Audio
@@ -162,10 +168,43 @@ public class UserProfileService {
         if (count >= 5) {
             log.error("Max number of audio profiles reached: {}", count);
             return;
-        }else{
+        } else {
             log.info("Number of audio profiles: {}", count);
         }
         List<TriplePattern> query = musicalWorkQueryParamsService.getSaveAudioProfileQuery(audioData, user);
         dataRetriever.createAndExecuteInsertQuery(query);
+    }
+
+    public void updateProfile(UsersQueryParams updateData) {
+        List<TriplePattern> delete = new ArrayList<>();
+        List<TriplePattern> insert = new ArrayList<>();
+        UsersQueryParams userUQP = getUserProfile(UsersQueryParams.builder().userId(updateData.userId()).build());
+        Users user = usersQueryParamsService.getOntEntity(userUQP);
+        Users updateUser = usersQueryParamsService.getOntEntity(updateData);
+        user.getInstruments().forEach(instrument -> log.debug("Instrument: {}", instrument.getIRI()));
+        log.debug("Update User: {}", updateUser);
+        for (Field field : Users.class.getDeclaredFields()) {
+            field.setAccessible(true);
+            if (!field.isAnnotationPresent(OntEntityField.class)) {
+                continue;
+            }
+            try {
+                log.debug("Field Value: {}", field.get(updateUser));
+                if (field.get(updateUser) != null && !field.get(updateUser).equals("") && !((Collection<?>) field.get(updateUser)).isEmpty()) {
+                    delete.add(user.getFieldTriplePattern(user, field));
+                    insert.add(updateUser.getFieldTriplePattern(updateUser, field));
+
+                }
+            } catch (IllegalAccessException e) {
+                log.error("Error updating profile: {}", e.getMessage());
+            }
+        }
+        DeleteDataQuery delQuery = Queries.DELETE_DATA();
+        InsertDataQuery insQuery = Queries.INSERT_DATA();
+        delete.forEach(delQuery::deleteData);
+        insert.forEach(insQuery::insertData);
+        String query = delQuery.getQueryString() +" ; "+ insQuery.getQueryString();
+        log.debug("Update Query: {}", query);
+        dataRetriever.executeQuery(query);
     }
 }

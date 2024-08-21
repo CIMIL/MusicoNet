@@ -1,8 +1,6 @@
 package musico.services.user.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import musico.services.user.models.ProfilePicture;
 import musico.services.user.models.UserProfileDTO;
@@ -12,20 +10,16 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.internals.RecordHeader;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
 import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.security.Principal;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
@@ -53,6 +47,15 @@ public class ProfileController {
         profileDTO.setUserId(principal.getUserPrincipal().getName());
         kafkaTemplate.send("profile-creation", profileDTO);
         return "Profile created";
+    }
+
+    @PostMapping(path = "/update")
+    @PreAuthorize("hasAuthority('SCOPE_user')")
+    public String updateProfile(@RequestBody UserProfileDTO profileDTO, HttpServletRequest principal) {
+        // Get User ID from principal
+        profileDTO.setUserId(principal.getUserPrincipal().getName());
+        kafkaTemplate.send("profile-update", profileDTO);
+        return "Profile updated";
     }
 
     @GetMapping(path = "/get")

@@ -1088,7 +1088,7 @@ Rules
         u <musico:plays_instrument> i
         u <musico:plays_instrument> j [Constraint i != j]
     ------------------------------------
-        u <musico:multi_instrumentalism_level> "multi-instrumentalist"^^rdf:PlainLiteral
+        u <musico:multi-instrumentalism_level> "multi-instrumentalist"^^rdf:PlainLiteral
 
     Id: user_recommendation_1
 

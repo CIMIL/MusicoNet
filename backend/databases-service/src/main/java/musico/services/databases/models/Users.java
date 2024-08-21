@@ -54,7 +54,8 @@ public class Users implements OntEntity {
     @Column(name = "codice_fiscale", length = 16)
     private String codiceFiscale;
 
-    @OntEntityField(type = OntEntityField.DataType.OBJECT, pred = "foaf:based_near")
+    // TODO: Make it usable
+//    @OntEntityField(type = OntEntityField.DataType.OBJECT, pred = "foaf:based_near")
     @Column(name = "based_near")
     private Integer basedNear;
 

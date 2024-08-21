@@ -7,11 +7,10 @@ import musico.services.databases.config.OntologyModel;
 import musico.services.databases.models.Genre;
 import musico.services.databases.models.Instrument;
 import musico.services.databases.models.Users;
-import musico.services.databases.models.kafka.UsersQueryParams.UsersQueryParamsBuilder;
 import musico.services.databases.models.kafka.UsersQueryParams;
+import musico.services.databases.models.kafka.UsersQueryParams.UsersQueryParamsBuilder;
 import musico.services.databases.repositories.GenreRepository;
 import musico.services.databases.repositories.InstrumentRepository;
-import org.eclipse.rdf4j.model.Triple;
 import org.eclipse.rdf4j.model.util.Values;
 import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.eclipse.rdf4j.query.BindingSet;
@@ -98,7 +97,6 @@ public class UsersQueryParamsService {
             return response;
         }
         for (BindingSet row : params) {
-            log.info("Row: {}", row.toString());
             for (Field field : response.getClass().getDeclaredFields()) {
                 field.setAccessible(true);
                 try {

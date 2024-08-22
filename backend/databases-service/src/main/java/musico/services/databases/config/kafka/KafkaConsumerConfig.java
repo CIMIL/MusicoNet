@@ -1,6 +1,7 @@
 package musico.services.databases.config.kafka;
 
 import lombok.RequiredArgsConstructor;
+import musico.services.databases.models.kafka.MusicalEventDTO;
 import musico.services.databases.models.kafka.MusicalWorkQueryParams;
 import musico.services.databases.models.kafka.UserSearchParams;
 import musico.services.databases.models.kafka.UsersQueryParams;
@@ -28,6 +29,7 @@ public class KafkaConsumerConfig {
     private String bootstrapAddress;
 
     private final KafkaTemplate<String, UsersQueryParams> usersQueryParamsTemplate;
+    private final KafkaTemplate<String, MusicalEventDTO> musicalEventDTOTemplate;
 
     @Bean
     public ConsumerFactory<String, MusicalWorkQueryParams> musicalWorkQueryParamsConsumerFactory() {
@@ -105,4 +107,27 @@ public class KafkaConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(UserSearchParams.class));
     }
 
+    @Bean
+    public ConsumerFactory<String, MusicalEventDTO> musicalEventDTOConsumerFactory(){
+        Map<String, Object> props = new HashMap<>();
+        props.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapAddress);
+        props.put(
+                ConsumerConfig.GROUP_ID_CONFIG,
+                "database-service");
+        props.put(
+                ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS,
+                JsonDeserializer.class.getName()
+        );
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(MusicalEventDTO.class));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, MusicalEventDTO> musicalEventDTOContainerFactory(){
+        ConcurrentKafkaListenerContainerFactory<String, MusicalEventDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(musicalEventDTOConsumerFactory());
+        factory.setReplyTemplate(musicalEventDTOTemplate);
+        return factory;
+    }
 }

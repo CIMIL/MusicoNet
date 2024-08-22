@@ -57,7 +57,7 @@ public class UserProfileService {
         GraphPatternNotTriples userQuery = usersQueryParamsService.buildQueryGraphPattern(userSignup);
         List<BindingSet> results = dataRetriever.createAndExecuteSelectQuery(userQuery);
         log.debug("results found for user: {}", results);
-        UsersQueryParams.UsersQueryParamsBuilder builder = usersQueryParamsService.getResponseMessageFromQueryResults(results);
+        UsersQueryParams.UsersQueryParamsBuilder builder = usersQueryParamsService.processUserGraphResults(results);
         builder.userId(userSignup.userId())
                 .requestID(userSignup.requestID())
                 .username(user.getUsername())
@@ -87,7 +87,7 @@ public class UserProfileService {
             if (results.isEmpty()) {
                 log.error("No results found for user: {}", params);
             } else {
-                UsersQueryParams.UsersQueryParamsBuilder builder = usersQueryParamsService.getResponseMessageFromQueryResults(results);
+                UsersQueryParams.UsersQueryParamsBuilder builder = usersQueryParamsService.processUserGraphResults(results);
                 builder.userId(user.getUserId())
                         .requestID(params.requestID())
                         .username(user.getUsername())
@@ -134,7 +134,7 @@ public class UserProfileService {
         for (Users user : resultSQL) {
             GraphPatternNotTriples userQuerySQL = usersQueryParamsService.buildQueryGraphPattern(UsersQueryParams.builder().userId(user.getUserId()).build());
             List<BindingSet> resultsSQL = dataRetriever.createAndExecuteSelectQuery(userQuerySQL);
-            UsersQueryParams.UsersQueryParamsBuilder builder = usersQueryParamsService.getResponseMessageFromQueryResults(resultsSQL);
+            UsersQueryParams.UsersQueryParamsBuilder builder = usersQueryParamsService.processUserGraphResults(resultsSQL);
             builder.userId(user.getUserId())
                     .username(user.getUsername())
                     .firstName(user.getFirstName())

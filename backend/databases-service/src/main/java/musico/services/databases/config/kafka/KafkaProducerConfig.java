@@ -1,5 +1,6 @@
 package musico.services.databases.config.kafka;
 
+import musico.services.databases.models.kafka.MusicalEventDTO;
 import musico.services.databases.models.kafka.UsersQueryParams;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
@@ -20,6 +21,7 @@ import org.springframework.kafka.support.serializer.DelegatingSerializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //@Configuration
@@ -53,6 +55,11 @@ public class KafkaProducerConfig {
     }
 
     @Bean
+    public KafkaTemplate<String, MusicalEventDTO> musicalEventDTOTemplate(){
+        return new KafkaTemplate<>(musicalEventDTOProducerFactory());
+    }
+
+    @Bean
     public ProducerFactory<String, UsersQueryParams> UserQueryParamsProducerFactory() {
         Map<String, Object> configProps = new HashMap<>();
         JsonSerializer<UsersQueryParams> serializer = new JsonSerializer<>();
@@ -64,6 +71,28 @@ public class KafkaProducerConfig {
 //                DelegatingSerializer.VALUE_SERIALIZATION_SELECTOR,
 //                "UsersQueryParams,org.springframework.kafka.support.serializer.JsonSerializer"
 //        );
+        return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
+    }
+
+   @Bean
+   public ProducerFactory<String, MusicalEventDTO> musicalEventDTOProducerFactory(){
+         Map<String, Object> configProps = new HashMap<>();
+         JsonSerializer<MusicalEventDTO> serializer = new JsonSerializer<>();
+         serializer.setAddTypeInfo(false);
+         configProps.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapAddress);
+         return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
+   }
+
+    @Bean
+    public ProducerFactory<String, List<MusicalEventDTO>> listProducerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        JsonSerializer<List<MusicalEventDTO>> serializer = new JsonSerializer<>();
+        serializer.setAddTypeInfo(false);
+        configProps.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapAddress);
         return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
     }
 }

@@ -91,7 +91,7 @@ public class UsersQueryParamsService {
         return dataToQuery.buildGenericQueryGraphPattern(dataToQuery);
     }
 
-    public UsersQueryParamsBuilder getResponseMessageFromQueryResults(List<BindingSet> params) {
+    public UsersQueryParamsBuilder processUserGraphResults(List<BindingSet> params) {
         UsersQueryParamsBuilder response = UsersQueryParams.builder();
         if (params == null || params.isEmpty()) {
             log.info("Response is empty");
@@ -130,7 +130,5 @@ public class UsersQueryParamsService {
         return GraphPatterns.and(GraphPatterns.tp(userIRI,
                 Values.iri(Objects.requireNonNull(OntologyModel.getNamespace("musicoo")).getName() + "gets_recommended_users"),
                 SparqlBuilder.var("users")));
-
-
     }
 }

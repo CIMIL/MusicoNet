@@ -3,10 +3,8 @@ package musico.services.user.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import musico.services.user.models.ProfilePicture;
-import musico.services.user.models.UserParams;
 import musico.services.user.models.UserProfileDTO;
 import musico.services.user.services.StorageService;
-import org.apache.catalina.User;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.internals.RecordHeader;
@@ -155,7 +153,7 @@ public class ProfileController {
         UserProfileDTO profileDTO = new UserProfileDTO();
         profileDTO.setUserId(principal.getUserPrincipal().getName());
         ProducerRecord<String,UserProfileDTO> record = new ProducerRecord<>("recommendation-user", profileDTO);
-        record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, "recommendation-user-response".getBytes()));
+        record.headers().add(KafkaHeaders.REPLY_TOPIC, "recommendation-user-response".getBytes());
         RequestReplyFuture<String, UserProfileDTO, List<UserProfileDTO>> future = recommendedUsersTemplate.sendAndReceive(record);
         future.getSendFuture().get(10, TimeUnit.SECONDS);
         try{

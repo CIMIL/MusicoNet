@@ -84,13 +84,24 @@ public class KafkaProducerConfig {
         repliesContainer.getContainerProperties().setGroupId("auth-reply-group");
         return repliesContainer;
     }
+
     @Bean
     public JsonMessageConverter jsonMessageConverter() {
         return new ByteArrayJsonMessageConverter();
     }
 
     @Bean
-    public ReplyingKafkaTemplate<String, UserParams, List<UserProfileDTO> > searchReplyingKafkaTemplate(
+    public ReplyingKafkaTemplate<String, UserProfileDTO, List<UserProfileDTO>> UserRecommendationKRT(
+            ProducerFactory<String, UserProfileDTO> pf,
+            ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> repliesContainer) {
+        ReplyingKafkaTemplate<String, UserProfileDTO, List<UserProfileDTO>> replyTemplate = new ReplyingKafkaTemplate<>(pf, repliesContainer);
+        replyTemplate.setDefaultReplyTimeout(Duration.ofSeconds(10));
+        replyTemplate.setSharedReplyTopic(true);
+        return replyTemplate;
+    }
+
+    @Bean
+    public ReplyingKafkaTemplate<String, UserParams, List<UserProfileDTO>> searchReplyingKafkaTemplate(
             ProducerFactory<String, UserParams> pf,
             ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> repliesContainer) {
         ReplyingKafkaTemplate<String, UserParams, List<UserProfileDTO>> replyTemplate = new ReplyingKafkaTemplate<>(pf, repliesContainer);
@@ -139,7 +150,6 @@ public class KafkaProducerConfig {
         );
         return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
     }
-
 
 
 }

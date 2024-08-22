@@ -11,6 +11,7 @@ import musico.services.databases.models.kafka.UsersQueryParams;
 import musico.services.databases.models.kafka.UsersQueryParams.UsersQueryParamsBuilder;
 import musico.services.databases.repositories.GenreRepository;
 import musico.services.databases.repositories.InstrumentRepository;
+import org.eclipse.rdf4j.model.IRI;
 import org.eclipse.rdf4j.model.util.Values;
 import org.eclipse.rdf4j.model.vocabulary.RDF;
 import org.eclipse.rdf4j.query.BindingSet;
@@ -35,9 +36,9 @@ public class UsersQueryParamsService {
     public Users getOntEntity(UsersQueryParams queryParams) {
         Set<Genre> genres = new HashSet<>();
         Set<Instrument> instruments = new HashSet<>();
-        if(queryParams.genres() != null)
+        if (queryParams.genres() != null)
             genres = Arrays.stream(queryParams.genres()).map(genreRepository::findByGenreNameLike).filter(Objects::nonNull).collect(Collectors.toSet());
-        if(queryParams.instruments() != null)
+        if (queryParams.instruments() != null)
             instruments = Arrays.stream(queryParams.instruments()).map(instrumentRepository::findByInstrumentNameLike).filter(Objects::nonNull).collect(Collectors.toSet());
         return Users.builder()
                 .userId(queryParams.userId())
@@ -92,7 +93,7 @@ public class UsersQueryParamsService {
 
     public UsersQueryParamsBuilder getResponseMessageFromQueryResults(List<BindingSet> params) {
         UsersQueryParamsBuilder response = UsersQueryParams.builder();
-        if (params == null || params.isEmpty() ) {
+        if (params == null || params.isEmpty()) {
             log.info("Response is empty");
             return response;
         }
@@ -109,7 +110,7 @@ public class UsersQueryParamsService {
                             field.set(response, list.toArray(new String[0]));
                             continue;
                         }
-                        field.set(response, row.getValue(field.getName()+"_name").stringValue());
+                        field.set(response, row.getValue(field.getName() + "_name").stringValue());
                     }
                 } catch (IllegalAccessException e) {
                     log.error("Error: {}", e.getMessage());
@@ -123,5 +124,13 @@ public class UsersQueryParamsService {
     public GraphPatternNotTriples checkUserExists(UsersQueryParams params) {
         Users dataToQuery = getOntEntity(params);
         return GraphPatterns.and(GraphPatterns.tp(dataToQuery.getIRI(), RDF.TYPE, SparqlBuilder.var("type")));
+    }
+
+    public GraphPatternNotTriples getRecommendedUsersIds(IRI userIRI) {
+        return GraphPatterns.and(GraphPatterns.tp(userIRI,
+                Values.iri(Objects.requireNonNull(OntologyModel.getNamespace("musicoo")).getName() + "gets_recommended_users"),
+                SparqlBuilder.var("users")));
+
+
     }
 }

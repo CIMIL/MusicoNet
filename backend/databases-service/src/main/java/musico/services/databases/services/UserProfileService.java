@@ -207,4 +207,22 @@ public class UserProfileService {
         log.debug("Update Query: {}", query);
         dataRetriever.executeQuery(query);
     }
+
+    public List<UsersQueryParams> getRecommendedUsers(UsersQueryParams userSignup) {
+        Users user = userService.getUserProfile(userSignup.userId());
+        List<UsersQueryParams> response = new ArrayList<>();
+        List<BindingSet> recommendedUsers = dataRetriever.createAndExecuteSelectQuery(
+                usersQueryParamsService.getRecommendedUsersIds(user.getIRI()),
+                "users");
+        for (BindingSet binding : recommendedUsers) {
+            String iri =binding.getValue("users").stringValue();
+            String userId = iri.substring(iri.lastIndexOf("/") + 1);
+            UsersQueryParams userParams = UsersQueryParams.builder().userId(userId).build();
+            UsersQueryParams userResult = getUserProfile(userParams);
+            if (userResult != null) {
+                response.add(userResult);
+            }
+        }
+        return response;
+    }
 }

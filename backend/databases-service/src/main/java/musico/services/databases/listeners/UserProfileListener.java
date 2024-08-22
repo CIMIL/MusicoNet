@@ -104,4 +104,12 @@ public class UserProfileListener {
         log.info("Received updateProfile request: {}", userSignup.toString());
         userProfileService.updateProfile(userSignup);
     }
+
+    @KafkaListener(topics="recommendation-user", groupId = "databases-service",
+            containerFactory = "usersQueryParamsListener")
+    @SendTo
+    public List<UsersQueryParams> getRecommendations(UsersQueryParams userSignup) {
+        log.info("Received getRecommendations request: {}", userSignup.toString());
+        return userProfileService.getRecommendedUsers(userSignup);
+    }
 }

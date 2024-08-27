@@ -35,7 +35,7 @@ public class ProfileController {
     private final ReplyingKafkaTemplate<String, UserProfileDTO, List<UserProfileDTO>> recommendedUsersTemplate;
     private final StorageService storageService;
 
-    public ProfileController(@Qualifier("kafkaTemplateAuthProcess") KafkaTemplate<String, UserProfileDTO> kafkaTemplate,
+    public ProfileController(@Qualifier("kafkaTemplateUserProfileDTO") KafkaTemplate<String, UserProfileDTO> kafkaTemplate,
                              ReplyingKafkaTemplate<String, UserProfileDTO, UserProfileDTO> replyingKafkaTemplate,
                              ReplyingKafkaTemplate<String, UserProfileDTO, List<UserProfileDTO>> recommendedUsersTemplate,
                              StorageService storageService) {

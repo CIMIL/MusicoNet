@@ -35,6 +35,15 @@ public class UserSearchKafkaConfig {
     private final JsonMessageConverter jsonMessageConverter;
 
     @Bean
+    public ConsumerFactory<String, List<UserProfileDTO>> listConsumerFactory(){
+        Map<String, Object> props = new HashMap<>();
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        props.put("group.id", "user-service");
+        props.put("bootstrap.servers", bootstrapAddress);
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(List.class));
+    }
+
+    @Bean
     public ReplyingKafkaTemplate<String, UserParams, List<UserProfileDTO>> searchReplyingKafkaTemplate(
             ProducerFactory<String, UserParams> pf,
             ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> repliesContainer) {
@@ -48,26 +57,10 @@ public class UserSearchKafkaConfig {
     public ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> searchListenerContainer(
             ConcurrentKafkaListenerContainerFactory<String, List<UserProfileDTO>> containerFactory) {
         containerFactory.setRecordMessageConverter(jsonMessageConverter);
-        containerFactory.setConsumerFactory(searchConsumerFactory());
+        containerFactory.setConsumerFactory(listConsumerFactory());
         ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> repliesContainer = containerFactory.createContainer("user-search-response");
         repliesContainer.getContainerProperties().setGroupId("search-reply-group");
         return repliesContainer;
-    }
-
-    @Bean
-    public ConsumerFactory<String, List<UserProfileDTO>> searchConsumerFactory() {
-        Map<String, Object> props = new HashMap<>();
-        props.put(
-                JsonDeserializer.TRUSTED_PACKAGES,
-                "*");
-        props.put(
-                "group.id",
-                "user-service"
-        );
-        props.put(
-                "bootstrap.servers",
-                bootstrapAddress);
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(List.class));
     }
 
     @Bean

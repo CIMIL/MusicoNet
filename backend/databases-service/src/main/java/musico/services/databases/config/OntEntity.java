@@ -153,35 +153,17 @@ public interface OntEntity {
                         switch (annotation.type()) {
                             case DATA: {
                                 Object objValue = field.get(clazz);
-                                if (!field.getName().equals("bpm")) {
-                                    genLiteralEntityDoublePattern(entity, patterns, annotation, objValue);
-                                } else {
-                                    Integer bpm = (Integer) objValue;
-                                    if (entity instanceof Variable) {
-                                        patterns.add(
-                                                GraphPatterns.optional(
-                                                                GraphPatterns.tp(
-                                                                        (Variable) entity,
-                                                                        Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
-                                                                        SparqlBuilder.var(field.getName())
-                                                                )
-                                                        ).filter(Expressions.gte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm - 3)))
-                                                        .filter(Expressions.lte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm + 3))
-                                                        )
-                                        );
-                                    } else {
-                                        patterns.add(
-                                                GraphPatterns.optional(
-                                                        GraphPatterns.tp(
-                                                                        (Resource) entity,
-                                                                        Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
-                                                                        SparqlBuilder.var(field.getName())
-                                                                ).filter(Expressions.gte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm - 3)))
-                                                                .filter(Expressions.lte(SparqlBuilder.var(field.getName()), Rdf.literalOf(bpm + 3))
-                                                                )
-                                                )
-                                        );
-                                    }
+                                switch (field.getName()) {
+                                    case "name":
+                                        genNameLikeField(field, (String) objValue, entity, patterns, annotation);
+                                        break;
+                                    case "bpm":
+                                        assert objValue instanceof Integer;
+                                        genBpmField(field, (Integer) objValue, entity, patterns, annotation);
+                                        break;
+                                    default:
+                                        genLiteralEntityDoublePattern(entity, patterns, annotation, objValue);
+                                        break;
                                 }
                                 break;
                             }
@@ -231,6 +213,60 @@ public interface OntEntity {
         }
         res.and(patterns.toArray(new GraphPatternNotTriples[0]));
         return res;
+    }
+
+    private static void genNameLikeField(Field field, String objValue, Object entity, List<GraphPatternNotTriples>
+    patterns, OntEntityField annotation){
+        if (entity instanceof Variable) {
+            patterns.add(
+                    GraphPatterns.and(
+                            GraphPatterns.tp(
+                                    (Variable) entity,
+                                    Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
+                                    SparqlBuilder.var(field.getName())
+                            )
+                    ).filter(Expressions.regex(SparqlBuilder.var(field.getName()), objValue, "i"))
+            );
+        } else {
+            patterns.add(
+                    GraphPatterns.and(
+                            GraphPatterns.tp(
+                                    (Resource) entity,
+                                    Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
+                                    SparqlBuilder.var(field.getName())
+                            )
+                    ).filter(Expressions.regex(SparqlBuilder.var(field.getName()), objValue, "i"))
+            );
+        }
+    }
+
+    private static void genBpmField(Field field, Integer objValue, Object entity, List<GraphPatternNotTriples> patterns,
+    OntEntityField annotation) {
+        if (entity instanceof Variable) {
+            patterns.add(
+                    GraphPatterns.and(
+                                    GraphPatterns.tp(
+                                            (Variable) entity,
+                                            Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
+                                            SparqlBuilder.var(field.getName())
+                                    )
+                            ).filter(Expressions.gte(SparqlBuilder.var(field.getName()), Rdf.literalOf(objValue - 3)))
+                            .filter(Expressions.lte(SparqlBuilder.var(field.getName()), Rdf.literalOf(objValue + 3))
+                            )
+            );
+        } else {
+            patterns.add(
+                    GraphPatterns.and(
+                            GraphPatterns.tp(
+                                            (Resource) entity,
+                                            Values.iri(Objects.requireNonNull(OntologyModel.getPredicate(annotation.pred()))),
+                                            SparqlBuilder.var(field.getName())
+                                    ).filter(Expressions.gte(SparqlBuilder.var(field.getName()), Rdf.literalOf(objValue - 3)))
+                                    .filter(Expressions.lte(SparqlBuilder.var(field.getName()), Rdf.literalOf(objValue + 3))
+                                    )
+                    )
+            );
+        }
     }
 
     default TriplePattern getFieldTriplePattern(OntEntity clazz, Field field) {

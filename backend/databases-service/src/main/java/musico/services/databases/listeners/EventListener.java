@@ -18,7 +18,7 @@ public class EventListener {
     private final MusicalEventService musicalEventService;
 
     @KafkaListener(topics = "events-recommendation", groupId = "databases-service",
-            containerFactory = "musicalEventDTOContainerFactory", splitIterables = false)
+            splitIterables = false)
     @SendTo
     public List<MusicalEventDTO> recommendedEventByUserId(String userId) {
         log.info("Received recommendation request for user: {}", userId);
@@ -32,12 +32,12 @@ public class EventListener {
         musicalEventService.saveEvent(event);
     }
 
-    @KafkaListener(topics ="events-get", groupId = "databases-service",
+    @KafkaListener(topics = "events-search", groupId = "databases-service",
             containerFactory = "musicalEventDTOContainerFactory", splitIterables = false)
     @SendTo
-    public List<MusicalEventDTO> getEvent(MusicalEventDTO event) {
+    public List<MusicalEventDTO> searchEvent(MusicalEventDTO event) {
         log.info("Received event get request for event: {}", event);
-        return musicalEventService.getEvents(event);
+        return musicalEventService.searchEvents(event);
     }
 
     @KafkaListener(topics = "events-delete", groupId = "databases-service",

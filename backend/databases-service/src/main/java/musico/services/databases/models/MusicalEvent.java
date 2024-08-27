@@ -26,7 +26,7 @@ import org.eclipse.rdf4j.sparqlbuilder.core.Variable;
 @Table(name = "musical_event")
 public class MusicalEvent implements OntEntity {
     @Id
-    @Size(max = 10)
+    @Size(max = 16)
     @Column(name = "event_id", nullable = false, length = 10)
     private String eventId;
 

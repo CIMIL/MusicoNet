@@ -85,14 +85,4 @@ public class KafkaProducerConfig {
          return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
    }
 
-    @Bean
-    public ProducerFactory<String, List<MusicalEventDTO>> listProducerFactory() {
-        Map<String, Object> configProps = new HashMap<>();
-        JsonSerializer<List<MusicalEventDTO>> serializer = new JsonSerializer<>();
-        serializer.setAddTypeInfo(false);
-        configProps.put(
-                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                bootstrapAddress);
-        return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
-    }
 }

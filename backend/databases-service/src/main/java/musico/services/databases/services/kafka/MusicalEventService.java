@@ -15,6 +15,7 @@ import org.eclipse.rdf4j.sparqlbuilder.core.SparqlBuilder;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.GraphPatternNotTriples;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.GraphPatterns;
 import org.eclipse.rdf4j.sparqlbuilder.graphpattern.TriplePattern;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -31,10 +32,12 @@ public class MusicalEventService {
     public List<MusicalEventDTO> getRecommendedEvents(String userId) {
         Users user = Users.builder().userId(userId).build();
         GraphPatternNotTriples query = GraphPatterns.and(GraphPatterns.tp(user.getIRI(),
-                Values.iri(Objects.requireNonNull(OntologyModel.getNamespace("musicoo")).getName() + "gets_recommended_events"),
+                Values.iri(Objects.requireNonNull(OntologyModel.getNamespace("musicoo")).getName() +
+                        "gets_recommended_events"),
                 SparqlBuilder.var("musicalEvent")));
         List<BindingSet> events = dataRetriever.createAndExecuteSelectQuery(query);
         List<MusicalEventDTO> results = new ArrayList<>();
+        if (events == null || events.isEmpty()) return results;
         for (BindingSet event : events) {
             String iris = event.getValue("musicalEvent").stringValue();
             String id = iris.substring(iris.lastIndexOf("/") + 1);
@@ -95,11 +98,11 @@ public class MusicalEventService {
 
     public void saveEvent(MusicalEventDTO event) {
         MusicalEvent musicalEvent = MusicalEvent.builder()
-                .eventId(event.eventId())
+                .eventId(UUID.randomUUID().toString().substring(0, 8))
                 .name(event.name())
                 .build();
         log.info("Saving event: {}", musicalEvent.toString());
-//        musicalEventRepository.save(musicalEvent);
+        musicalEventRepository.save(musicalEvent);
         List<TriplePattern> insertQuery = new ArrayList<>();
         insertQuery.add(
                 GraphPatterns.tp(
@@ -141,17 +144,21 @@ public class MusicalEventService {
                 .build();
     }
 
-    public List<MusicalEventDTO> getEvents(MusicalEventDTO event) {
+    public List<MusicalEventDTO> searchEvents(MusicalEventDTO event) {
         List<MusicalEventDTO> results = new ArrayList<>();
         // Get the event from the SQL database
         // Now only by name
         // TODO: Implement by other fields
-        List<MusicalEvent> eventsSql = musicalEventRepository.findAllByName(event.name());
+        Example<MusicalEvent> example = Example.of(getOntEntity(event));
+        List<MusicalEvent> eventsSql = musicalEventRepository.findBy(example,
+                q -> q.stream().toList());
+        eventsSql.forEach(e -> log.info("Event: {}", e.toString()));
         // Query the RDF database
         List<BindingSet> eventGraphData = dataRetriever.createAndExecuteSelectQuery(
                 getOntEntity(event).buildGenericQueryGraphPattern(getOntEntity(event))
         );
         // Filter the SQL results by the RDF results
+        if(eventGraphData == null) return results;
         eventsSql = eventsSql.stream().filter(
                 e -> eventGraphData.stream().anyMatch(
                         row -> row.getValue("musicalEvent").stringValue().endsWith(e.getEventId())

@@ -1,6 +1,16 @@
 package musico.services.user.models;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
-public record EventDTO(String id, String name, String description, LocalDateTime datetime, String location, String genre,  UserProfileDTO[] attendees, String hostId) {
+@Data
+public class EventDTO {
+    String eventId;
+    String name;
+    String description;
+    LocalDateTime datetime;
+    String location;
+    String genre;
+
 }

@@ -9,6 +9,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -110,6 +111,9 @@ public class UserProfileListener {
     @SendTo
     public List<UsersQueryParams> getRecommendations(UsersQueryParams userSignup) {
         log.info("Received getRecommendations request: {}", userSignup.toString());
-        return userProfileService.getRecommendedUsers(userSignup);
+        List<UsersQueryParams> test =  new ArrayList<>();
+        test.add(UsersQueryParams.builder().userId("prova").build());
+        return test;
+//        return userProfileService.getRecommendedUsers(userSignup);
     }
 }

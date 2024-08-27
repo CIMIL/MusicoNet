@@ -10,6 +10,6 @@ public record MusicalEventDTO(String eventId,
                               String description,
                               LocalDateTime datetime,
                               String location,
-                              String genre,
-                              UsersQueryParams[] attendees) {
+                              String genre
+                             ) {
 }

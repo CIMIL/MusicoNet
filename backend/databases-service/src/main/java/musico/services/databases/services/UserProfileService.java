@@ -214,6 +214,10 @@ public class UserProfileService {
         List<BindingSet> recommendedUsers = dataRetriever.createAndExecuteSelectQuery(
                 usersQueryParamsService.getRecommendedUsersIds(user.getIRI()),
                 "users");
+        if (recommendedUsers == null) {
+            log.error("No recommended users found for user: {}", userSignup);
+            return response;
+        }
         for (BindingSet binding : recommendedUsers) {
             String iri =binding.getValue("users").stringValue();
             String userId = iri.substring(iri.lastIndexOf("/") + 1);

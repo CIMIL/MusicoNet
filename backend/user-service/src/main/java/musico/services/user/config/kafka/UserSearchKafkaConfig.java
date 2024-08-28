@@ -1,6 +1,7 @@
 package musico.services.user.config.kafka;
 
 import lombok.RequiredArgsConstructor;
+import musico.services.user.models.KafkaResponse;
 import musico.services.user.models.UserParams;
 import musico.services.user.models.UserProfileDTO;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -35,30 +36,33 @@ public class UserSearchKafkaConfig {
     private final JsonMessageConverter jsonMessageConverter;
 
     @Bean
-    public ConsumerFactory<String, List<UserProfileDTO>> listConsumerFactory(){
-        Map<String, Object> props = new HashMap<>();
-        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
-        props.put("group.id", "user-service");
-        props.put("bootstrap.servers", bootstrapAddress);
-        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(List.class));
-    }
-
-    @Bean
-    public ReplyingKafkaTemplate<String, UserParams, List<UserProfileDTO>> searchReplyingKafkaTemplate(
+    public ReplyingKafkaTemplate<String, UserParams, KafkaResponse<List<UserProfileDTO>>> searchReplyingKafkaTemplate(
             ProducerFactory<String, UserParams> pf,
-            ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> repliesContainer) {
-        ReplyingKafkaTemplate<String, UserParams, List<UserProfileDTO>> replyTemplate = new ReplyingKafkaTemplate<>(pf, repliesContainer);
+            ConcurrentMessageListenerContainer<String, KafkaResponse<List<UserProfileDTO>>> repliesContainer) {
+        ReplyingKafkaTemplate<String, UserParams, KafkaResponse<List<UserProfileDTO>>> replyTemplate = new
+        ReplyingKafkaTemplate<>(pf, repliesContainer);
         replyTemplate.setDefaultReplyTimeout(Duration.ofSeconds(10));
         replyTemplate.setSharedReplyTopic(true);
         return replyTemplate;
     }
 
     @Bean
-    public ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> searchListenerContainer(
-            ConcurrentKafkaListenerContainerFactory<String, List<UserProfileDTO>> containerFactory) {
+    public ConsumerFactory<String, KafkaResponse<List<UserProfileDTO>>> listConsumerFactory() {
+        Map<String, Object> props = new HashMap<>();
+        JsonDeserializer<KafkaResponse<List<UserProfileDTO>>> deserializer = new JsonDeserializer<>(KafkaResponse.class);
+        props.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
+        props.put("group.id", "user-service");
+        props.put("bootstrap.servers", bootstrapAddress);
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), deserializer);
+    }
+
+    @Bean
+    public ConcurrentMessageListenerContainer<String, KafkaResponse<List<UserProfileDTO>>> searchListenerContainer(
+            ConcurrentKafkaListenerContainerFactory<String, KafkaResponse<List<UserProfileDTO>>> containerFactory) {
         containerFactory.setRecordMessageConverter(jsonMessageConverter);
         containerFactory.setConsumerFactory(listConsumerFactory());
-        ConcurrentMessageListenerContainer<String, List<UserProfileDTO>> repliesContainer = containerFactory.createContainer("user-search-response");
+        ConcurrentMessageListenerContainer<String, KafkaResponse<List<UserProfileDTO>>> repliesContainer =
+        containerFactory.createContainer("user-search-response");
         repliesContainer.getContainerProperties().setGroupId("search-reply-group");
         return repliesContainer;
     }

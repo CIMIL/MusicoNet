@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import musico.services.databases.config.OntEntityField;
 import musico.services.databases.enums.REGISTRATION_ENUMS;
 import musico.services.databases.models.Users;
+import musico.services.databases.models.kafka.KafkaResponse;
 import musico.services.databases.models.kafka.MusicalWorkQueryParams;
 import musico.services.databases.models.kafka.UserSearchParams;
 import musico.services.databases.models.kafka.UsersQueryParams;
@@ -42,10 +43,17 @@ public class UserProfileService {
         return REGISTRATION_ENUMS.CHECK_VALID;
     }
 
-    public void createUserProfile(UsersQueryParams signupData) {
+    public KafkaResponse<List<UsersQueryParams>> createUserProfile(UsersQueryParams signupData) {
+        KafkaResponse.KafkaResponseBuilder<List<UsersQueryParams>> response = KafkaResponse.builder();
         List<TriplePattern> query = usersQueryParamsService.buildInsertQueryGraphPattern(signupData);
-        userService.createUserProfile(signupData);
+        try {
+            userService.createUserProfile(signupData);
+        } catch (Exception e) {
+            log.error("Error creating user profile: {}", e.getMessage());
+            return response.status(400).message("Error creating user profile").build();
+        }
         dataRetriever.createAndExecuteInsertQuery(query);
+        return response.status(200).message("User profile created").build();
     }
 
     public UsersQueryParams getUserProfile(UsersQueryParams userSignup) {
@@ -108,12 +116,13 @@ public class UserProfileService {
         return response;
     }
 
-    public List<UsersQueryParams> searchUsers(UserSearchParams params) {
+    public KafkaResponse<List<UsersQueryParams>> searchUsers(UserSearchParams params) {
+        KafkaResponse.KafkaResponseBuilder<List<UsersQueryParams>> returnValue = KafkaResponse.builder();
         List<UsersQueryParams> response = new ArrayList<>();
         List<Users> resultSQL = userService.getUsersOnSql(params.username(), params.minAge(), params.maxAge(), params.gender());
         if (resultSQL.isEmpty()) {
             log.error("No results found for search in SQL: {}", params);
-            return response;
+            return returnValue.status(404).message("No results found for search in SQL: " + params).build();
         }
         log.info("SQL Results found for search: {}", resultSQL);
         UsersQueryParams usersQueryParams = UsersQueryParams.builder()
@@ -124,7 +133,7 @@ public class UserProfileService {
         List<BindingSet> results = dataRetriever.createAndExecuteSelectQuery(userQuery);
         if (results == null) {
             log.error("No results found for search in Graph: {}", params);
-            return response;
+            return returnValue.status(404).message("No results found for search in Graph: " + params).build();
         }
         resultSQL = resultSQL.stream()
                 .filter(users -> results.stream()
@@ -150,8 +159,12 @@ public class UserProfileService {
                     .youtube(user.getYoutube());
             response.add(builder.build());
         }
+        if(response.isEmpty()){
+            log.error("No results found for search: {}", params);
+            return returnValue.status(200).message("No results found for search: " + params).build();
+        }
         // Join the results from SQL and RDF
-        return response;
+        return returnValue.payload(response).status(200).message("OK").build();
     }
 
     public void addAudioData(MusicalWorkQueryParams audioData) {
@@ -203,7 +216,7 @@ public class UserProfileService {
         InsertDataQuery insQuery = Queries.INSERT_DATA();
         delete.forEach(delQuery::deleteData);
         insert.forEach(insQuery::insertData);
-        String query = delQuery.getQueryString() +" ; "+ insQuery.getQueryString();
+        String query = delQuery.getQueryString() + " ; " + insQuery.getQueryString();
         log.debug("Update Query: {}", query);
         dataRetriever.executeQuery(query);
     }
@@ -219,7 +232,7 @@ public class UserProfileService {
             return response;
         }
         for (BindingSet binding : recommendedUsers) {
-            String iri =binding.getValue("users").stringValue();
+            String iri = binding.getValue("users").stringValue();
             String userId = iri.substring(iri.lastIndexOf("/") + 1);
             UsersQueryParams userParams = UsersQueryParams.builder().userId(userId).build();
             UsersQueryParams userResult = getUserProfile(userParams);

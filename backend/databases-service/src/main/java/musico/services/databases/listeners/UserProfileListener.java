@@ -2,6 +2,7 @@ package musico.services.databases.listeners;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import musico.services.databases.models.kafka.KafkaResponse;
 import musico.services.databases.models.kafka.MusicalWorkQueryParams;
 import musico.services.databases.models.kafka.UsersQueryParams;
 import musico.services.databases.services.UserProfileService;
@@ -19,25 +20,17 @@ import java.util.List;
 public class UserProfileListener {
 
     private final UserProfileService userProfileService;
-    // TODO: Check if this is needed
-//    private final KafkaTemplate<String, UsersQueryParams> kafkaTemplate;
 
     @KafkaListener(topics = "profile-creation", groupId = "databases-service",
             containerFactory = "usersQueryParamsListener")
-    public void listenRegistration(UsersQueryParams signupData) {
+    public KafkaResponse<List<UsersQueryParams>> listenRegistration(UsersQueryParams signupData) {
+        KafkaResponse.KafkaResponseBuilder<List<UsersQueryParams>> response = KafkaResponse.builder();
         if (signupData == null) {
             log.error("Received null registration request");
-            return;
+            return response.status(400).message("Received null registration request").build();
         }
         log.info("Received registration request: {}", signupData);
-        // Check if profile already exists
-//        REGISTRATION_ENUMS check = userProfileService.checkProfileAlreadyExists(signupData);
-//        if (check != REGISTRATION_ENUMS.CHECK_VALID) {
-//            log.error("User already exists: {}", check);
-//            return;
-//        }
-        // Create user profile on GraphDB
-        userProfileService.createUserProfile(signupData);
+        return userProfileService.createUserProfile(signupData);
     }
 
     /**
@@ -53,7 +46,6 @@ public class UserProfileListener {
             return;
         }
         log.info("Received audio profile request: {}", audioData);
-
         userProfileService.addAudioData(audioData);
     }
 
@@ -67,15 +59,16 @@ public class UserProfileListener {
     @KafkaListener(topics = "profile-get", groupId = "databases-service",
             containerFactory = "usersQueryParamsListener")
     @SendTo
-    public UsersQueryParams getProfile(UsersQueryParams userSignup) {
+    public KafkaResponse<UsersQueryParams> getProfile(UsersQueryParams userSignup) {
+        KafkaResponse.KafkaResponseBuilder<UsersQueryParams> response = KafkaResponse.builder();
         log.info("Received getProfile request: {}", userSignup.toString());
-        UsersQueryParams response = userProfileService.getUserProfile(userSignup);
-        if (response == null) {
+        UsersQueryParams data = userProfileService.getUserProfile(userSignup);
+        if (data == null) {
             log.error("No results found for user: {}", userSignup);
-            return UsersQueryParams.builder().userId("NOT_FOUND").build();
+            return response.status(404).message("No results found for user: " + userSignup).build();
         }
         log.info("Response: {}", response);
-        return response;
+        return response.payload(data).status(200).message("OK").build();
     }
 
     /**
@@ -109,11 +102,14 @@ public class UserProfileListener {
     @KafkaListener(topics="recommendation-user", groupId = "databases-service",
             containerFactory = "usersQueryParamsListener")
     @SendTo
-    public List<UsersQueryParams> getRecommendations(UsersQueryParams userSignup) {
+    public KafkaResponse<List<UsersQueryParams>> getRecommendations(UsersQueryParams userSignup) {
+        KafkaResponse.KafkaResponseBuilder<List<UsersQueryParams>> response = KafkaResponse.builder();
         log.info("Received getRecommendations request: {}", userSignup.toString());
-        List<UsersQueryParams> test =  new ArrayList<>();
-        test.add(UsersQueryParams.builder().userId("prova").build());
-        return test;
-//        return userProfileService.getRecommendedUsers(userSignup);
+        List<UsersQueryParams> data = userProfileService.getRecommendedUsers(userSignup);
+        if (data == null) {
+            log.error("No recommended users found for user: {}", userSignup);
+            return response.status(404).message("No results found for user: " + userSignup).build();
+        }
+        return response.payload(data).status(200).message("OK").build();
     }
 }

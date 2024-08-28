@@ -7,10 +7,10 @@ import java.time.LocalDateTime;
 @Data
 public class EventDTO {
     String eventId;
+    String userId;
     String name;
     String description;
     LocalDateTime datetime;
     String location;
     String genre;
-
 }

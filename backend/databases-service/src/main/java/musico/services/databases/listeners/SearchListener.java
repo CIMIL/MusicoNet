@@ -3,6 +3,7 @@ package musico.services.databases.listeners;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import musico.services.databases.models.kafka.KafkaResponse;
 import musico.services.databases.models.kafka.UserSearchParams;
 import musico.services.databases.models.kafka.UsersQueryParams;
 import musico.services.databases.services.UserProfileService;
@@ -22,7 +23,7 @@ public class SearchListener {
     @KafkaListener(topics = "user-search", groupId = "databases-service",
             containerFactory = "userSearchParamsListener", splitIterables = false)
     @SendTo
-    public List<UsersQueryParams> listen(UserSearchParams params) {
+    public KafkaResponse<List<UsersQueryParams>> listen(UserSearchParams params) {
         log.info("Received search request: {}", params);
         return userProfileService.searchUsers(params);
     }

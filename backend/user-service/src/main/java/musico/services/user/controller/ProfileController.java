@@ -1,7 +1,9 @@
 package musico.services.user.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import musico.services.user.models.KafkaResponse;
 import musico.services.user.models.ProfilePicture;
 import musico.services.user.models.UserProfileDTO;
 import musico.services.user.services.StorageService;
@@ -31,13 +33,14 @@ import java.util.concurrent.TimeoutException;
 public class ProfileController {
 
     private final KafkaTemplate<String, UserProfileDTO> kafkaTemplate;
-    private final ReplyingKafkaTemplate<String, UserProfileDTO, UserProfileDTO> replyingKafkaTemplate;
-    private final ReplyingKafkaTemplate<String, UserProfileDTO, List<UserProfileDTO>> recommendedUsersTemplate;
+    private final ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<UserProfileDTO>> replyingKafkaTemplate;
+    private final ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<List<UserProfileDTO>>> recommendedUsersTemplate;
     private final StorageService storageService;
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public ProfileController(@Qualifier("kafkaTemplateUserProfileDTO") KafkaTemplate<String, UserProfileDTO> kafkaTemplate,
-                             ReplyingKafkaTemplate<String, UserProfileDTO, UserProfileDTO> replyingKafkaTemplate,
-                             ReplyingKafkaTemplate<String, UserProfileDTO, List<UserProfileDTO>> recommendedUsersTemplate,
+                             ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<UserProfileDTO>> replyingKafkaTemplate,
+                             ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<List<UserProfileDTO>>> recommendedUsersTemplate,
                              StorageService storageService) {
         this.kafkaTemplate = kafkaTemplate;
         this.replyingKafkaTemplate = replyingKafkaTemplate;
@@ -65,26 +68,26 @@ public class ProfileController {
 
     @GetMapping(path = "/get")
     @PreAuthorize("hasAuthority('SCOPE_user')")
-    public ResponseEntity<UserProfileDTO> getProfile( HttpServletRequest principal) throws ExecutionException, InterruptedException, TimeoutException {
+    public ResponseEntity<UserProfileDTO> getProfile(HttpServletRequest principal) throws ExecutionException, InterruptedException, TimeoutException {
         log.info("Principal: {}", principal);
         UserProfileDTO profileDTO = new UserProfileDTO();
         profileDTO.setUserId(principal.getUserPrincipal().getName());
         ProducerRecord<String, UserProfileDTO> record = new ProducerRecord<>("profile-get", profileDTO);
         record.headers().add(new RecordHeader(KafkaHeaders.REPLY_TOPIC, "profile-get-response".getBytes()));
-        RequestReplyFuture<String, UserProfileDTO, UserProfileDTO> future = replyingKafkaTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, UserProfileDTO, KafkaResponse<UserProfileDTO>> future = replyingKafkaTemplate.sendAndReceive(record);
         future.getSendFuture().get(10, TimeUnit.SECONDS);
-        log.info("Sent: {}", record.value()) ;
-        try{
-            ConsumerRecord<String, UserProfileDTO> response = future.get(10, TimeUnit.SECONDS);
+        log.info("Sent: {}", record.value());
+        try {
+            ConsumerRecord<String, KafkaResponse<UserProfileDTO>> response = future.get(10, TimeUnit.SECONDS);
             log.info("Response: {}", response.value());
-            if(response.value().getUserId().equals("NOT_FOUND")){
-                return ResponseEntity.notFound().build();
-            }
-            return ResponseEntity.ok(response.value());
-        }catch (Exception e){
+            UserProfileDTO profile = objectMapper.configure(
+                    com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false
+            ).convertValue(response.value().getPayload(), UserProfileDTO.class);
+            return ResponseEntity.status(response.value().getStatus()).body(profile);
+        } catch (Exception e) {
             log.error("Error while getting profile: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
         }
-        return ResponseEntity.notFound().build();
     }
 
     @PostMapping(path = "/profile-picture")
@@ -152,17 +155,17 @@ public class ProfileController {
     public ResponseEntity<List<UserProfileDTO>> getRecommendedUsers(HttpServletRequest principal) throws ExecutionException, InterruptedException, TimeoutException {
         UserProfileDTO profileDTO = new UserProfileDTO();
         profileDTO.setUserId(principal.getUserPrincipal().getName());
-        ProducerRecord<String,UserProfileDTO> record = new ProducerRecord<>("recommendation-user", profileDTO);
+        ProducerRecord<String, UserProfileDTO> record = new ProducerRecord<>("recommendation-user", profileDTO);
         record.headers().add(KafkaHeaders.REPLY_TOPIC, "recommendation-user-response".getBytes());
-        RequestReplyFuture<String, UserProfileDTO, List<UserProfileDTO>> future = recommendedUsersTemplate.sendAndReceive(record);
+        RequestReplyFuture<String, UserProfileDTO, KafkaResponse<List<UserProfileDTO>>> future = recommendedUsersTemplate.sendAndReceive(record);
         future.getSendFuture().get(10, TimeUnit.SECONDS);
-        try{
-            ConsumerRecord<String, List<UserProfileDTO>> response = future.get(10, TimeUnit.SECONDS);
+        try {
+            ConsumerRecord<String, KafkaResponse<List<UserProfileDTO>>> response = future.get(10, TimeUnit.SECONDS);
             log.info("Recommended users: {}", response.value());
-            return ResponseEntity.ok(response.value());
-        }catch (Exception e){
+            return ResponseEntity.status(response.value().getStatus()).body(response.value().getPayload());
+        } catch (Exception e) {
             log.error("Error in receiving recommended users: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
         }
-        return ResponseEntity.notFound().build();
     }
 }

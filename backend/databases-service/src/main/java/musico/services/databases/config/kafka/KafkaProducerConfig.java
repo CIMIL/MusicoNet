@@ -1,5 +1,6 @@
 package musico.services.databases.config.kafka;
 
+import musico.services.databases.models.kafka.KafkaResponse;
 import musico.services.databases.models.kafka.MusicalEventDTO;
 import musico.services.databases.models.kafka.UsersQueryParams;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -57,6 +58,22 @@ public class KafkaProducerConfig {
     @Bean
     public KafkaTemplate<String, MusicalEventDTO> musicalEventDTOTemplate(){
         return new KafkaTemplate<>(musicalEventDTOProducerFactory());
+    }
+
+    @Bean
+    public KafkaTemplate<String, KafkaResponse<?>> kafkaResponseTemplate() {
+        return new KafkaTemplate<>(kafkaResponseProducerFactory());
+    }
+
+    @Bean
+    public ProducerFactory<String, KafkaResponse<?>> kafkaResponseProducerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        JsonSerializer<KafkaResponse<?>> serializer = new JsonSerializer<>();
+        serializer.setAddTypeInfo(false);
+        configProps.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapAddress);
+        return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
     }
 
     @Bean

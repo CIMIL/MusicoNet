@@ -33,22 +33,6 @@ public class UserProfileListener {
         return userProfileService.createUserProfile(signupData);
     }
 
-    /**
-     * Listens for messages on the "audio-profile" topic and processes the audio profile data.
-     *
-     * @param audioData The audio profile data to process.
-     */
-    @KafkaListener(topics = "audio-profile", groupId = "databases-service",
-            containerFactory = "musicalWorkQueryParamsListener")
-    public void listenAudioProfile(MusicalWorkQueryParams audioData) {
-        if (audioData == null) {
-            log.error("Received null audio profile request");
-            return;
-        }
-        log.info("Received audio profile request: {}", audioData);
-        userProfileService.addAudioData(audioData);
-    }
-
 
     /**
      * Listens for messages on the "profile-get" topic and retrieves the user profile.
@@ -99,7 +83,7 @@ public class UserProfileListener {
         userProfileService.updateProfile(userSignup);
     }
 
-    @KafkaListener(topics="recommendation-user", groupId = "databases-service",
+    @KafkaListener(topics = "recommendation-user", groupId = "databases-service",
             containerFactory = "usersQueryParamsListener")
     @SendTo
     public KafkaResponse<List<UsersQueryParams>> getRecommendations(UsersQueryParams userSignup) {
@@ -111,5 +95,21 @@ public class UserProfileListener {
             return response.status(404).message("No results found for user: " + userSignup).build();
         }
         return response.payload(data).status(200).message("OK").build();
+    }
+
+    /**
+     * Listens for messages on the "audio-profile" topic and processes the audio profile data.
+     *
+     * @param audioData The audio profile data to process.
+     */
+    @KafkaListener(topics = "audio-profile", groupId = "databases-service",
+            containerFactory = "musicalWorkQueryParamsListener")
+    public void listenAudioProfile(MusicalWorkQueryParams audioData) {
+        if (audioData == null) {
+            log.error("Received null audio profile request");
+            return;
+        }
+        log.info("Received audio profile request: {}", audioData);
+        userProfileService.addAudioData(audioData);
     }
 }

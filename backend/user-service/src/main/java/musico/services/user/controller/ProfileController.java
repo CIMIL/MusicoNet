@@ -7,14 +7,13 @@ import musico.services.user.models.KafkaResponse;
 import musico.services.user.models.ProfilePicture;
 import musico.services.user.models.UserProfileDTO;
 import musico.services.user.services.StorageService;
+import org.apache.catalina.User;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.header.internals.RecordHeader;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.requestreply.RequestReplyFuture;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -32,17 +31,15 @@ import java.util.concurrent.TimeoutException;
 @RequestMapping(path = "/user/profile")
 public class ProfileController {
 
-    private final KafkaTemplate<String, UserProfileDTO> kafkaTemplate;
     private final ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<UserProfileDTO>> replyingKafkaTemplate;
     private final ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<List<UserProfileDTO>>> recommendedUsersTemplate;
     private final StorageService storageService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public ProfileController(@Qualifier("kafkaTemplateUserProfileDTO") KafkaTemplate<String, UserProfileDTO> kafkaTemplate,
-                             ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<UserProfileDTO>> replyingKafkaTemplate,
-                             ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<List<UserProfileDTO>>> recommendedUsersTemplate,
-                             StorageService storageService) {
-        this.kafkaTemplate = kafkaTemplate;
+    public ProfileController(
+            ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<UserProfileDTO>> replyingKafkaTemplate,
+            ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<List<UserProfileDTO>>> recommendedUsersTemplate,
+            StorageService storageService) {
         this.replyingKafkaTemplate = replyingKafkaTemplate;
         this.recommendedUsersTemplate = recommendedUsersTemplate;
         this.storageService = storageService;
@@ -50,20 +47,42 @@ public class ProfileController {
 
     @PostMapping(path = "/create")
     @PreAuthorize("hasAuthority('SCOPE_user')")
-    public String createProfile(@RequestBody UserProfileDTO profileDTO, HttpServletRequest principal) {
+    public ResponseEntity<UserProfileDTO> createProfile(@RequestBody UserProfileDTO profileDTO, HttpServletRequest principal) {
         // Get User ID from principal
         profileDTO.setUserId(principal.getUserPrincipal().getName());
-        kafkaTemplate.send("profile-creation", profileDTO);
-        return "Profile created";
+        try {
+            ProducerRecord<String, UserProfileDTO> record = new ProducerRecord<>("profile-creation", profileDTO);
+            record.headers().add(KafkaHeaders.REPLY_TOPIC, "profile-create-response".getBytes());
+            RequestReplyFuture<String, UserProfileDTO, KafkaResponse<UserProfileDTO>> future = replyingKafkaTemplate.sendAndReceive(record);
+            future.getSendFuture().get(10, TimeUnit.SECONDS);
+            log.info("Sent profile: {}", record.value());
+            ConsumerRecord<String, KafkaResponse<UserProfileDTO>> response = future.get(10, TimeUnit.SECONDS);
+            log.info("Profile created: {}", response.value());
+            return ResponseEntity.status(response.value().getStatus()).body(response.value().getPayload());
+        } catch (Exception e) {
+            log.error("Error while creating profile: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @PostMapping(path = "/update")
     @PreAuthorize("hasAuthority('SCOPE_user')")
-    public String updateProfile(@RequestBody UserProfileDTO profileDTO, HttpServletRequest principal) {
+    public ResponseEntity<UserProfileDTO> updateProfile(@RequestBody UserProfileDTO profileDTO, HttpServletRequest principal) {
         // Get User ID from principal
         profileDTO.setUserId(principal.getUserPrincipal().getName());
-        kafkaTemplate.send("profile-update", profileDTO);
-        return "Profile updated";
+        try {
+            ProducerRecord<String, UserProfileDTO> record = new ProducerRecord<>("profile-update", profileDTO);
+            record.headers().add(KafkaHeaders.REPLY_TOPIC, "profile-update-response".getBytes());
+            RequestReplyFuture<String, UserProfileDTO, KafkaResponse<UserProfileDTO>> future = replyingKafkaTemplate.sendAndReceive(record);
+            future.getSendFuture().get(10, TimeUnit.SECONDS);
+            log.info("Sent profile updated: {}", record.value());
+            ConsumerRecord<String, KafkaResponse<UserProfileDTO>> response = future.get(10, TimeUnit.SECONDS);
+            log.info("Profile updated: {}", response.value());
+            return ResponseEntity.status(response.value().getStatus()).body(response.value().getPayload());
+        } catch (Exception e) {
+            log.error("Error while updating profile: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping(path = "/get")
@@ -86,6 +105,25 @@ public class ProfileController {
             return ResponseEntity.status(response.value().getStatus()).body(profile);
         } catch (Exception e) {
             log.error("Error while getting profile: {}", e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping(path = "/recommendation/user")
+    @PreAuthorize("hasAuthority('SCOPE_user')")
+    public ResponseEntity<List<UserProfileDTO>> getRecommendedUsers(HttpServletRequest principal) throws ExecutionException, InterruptedException, TimeoutException {
+        UserProfileDTO profileDTO = new UserProfileDTO();
+        profileDTO.setUserId(principal.getUserPrincipal().getName());
+        ProducerRecord<String, UserProfileDTO> record = new ProducerRecord<>("recommendation-user", profileDTO);
+        record.headers().add(KafkaHeaders.REPLY_TOPIC, "recommendation-user-response".getBytes());
+        RequestReplyFuture<String, UserProfileDTO, KafkaResponse<List<UserProfileDTO>>> future = recommendedUsersTemplate.sendAndReceive(record);
+        future.getSendFuture().get(10, TimeUnit.SECONDS);
+        try {
+            ConsumerRecord<String, KafkaResponse<List<UserProfileDTO>>> response = future.get(10, TimeUnit.SECONDS);
+            log.info("Recommended users: {}", response.value());
+            return ResponseEntity.status(response.value().getStatus()).body(response.value().getPayload());
+        } catch (Exception e) {
+            log.error("Error in receiving recommended users: {}", e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -150,22 +188,5 @@ public class ProfileController {
         return ResponseEntity.notFound().build();
     }
 
-    @GetMapping(path = "/recommendation/user")
-    @PreAuthorize("hasAuthority('SCOPE_user')")
-    public ResponseEntity<List<UserProfileDTO>> getRecommendedUsers(HttpServletRequest principal) throws ExecutionException, InterruptedException, TimeoutException {
-        UserProfileDTO profileDTO = new UserProfileDTO();
-        profileDTO.setUserId(principal.getUserPrincipal().getName());
-        ProducerRecord<String, UserProfileDTO> record = new ProducerRecord<>("recommendation-user", profileDTO);
-        record.headers().add(KafkaHeaders.REPLY_TOPIC, "recommendation-user-response".getBytes());
-        RequestReplyFuture<String, UserProfileDTO, KafkaResponse<List<UserProfileDTO>>> future = recommendedUsersTemplate.sendAndReceive(record);
-        future.getSendFuture().get(10, TimeUnit.SECONDS);
-        try {
-            ConsumerRecord<String, KafkaResponse<List<UserProfileDTO>>> response = future.get(10, TimeUnit.SECONDS);
-            log.info("Recommended users: {}", response.value());
-            return ResponseEntity.status(response.value().getStatus()).body(response.value().getPayload());
-        } catch (Exception e) {
-            log.error("Error in receiving recommended users: {}", e.getMessage());
-            return ResponseEntity.internalServerError().build();
-        }
-    }
+
 }

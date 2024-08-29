@@ -40,7 +40,7 @@ public class UserSearchKafkaConfig {
             ProducerFactory<String, UserParams> pf,
             ConcurrentMessageListenerContainer<String, KafkaResponse<List<UserProfileDTO>>> repliesContainer) {
         ReplyingKafkaTemplate<String, UserParams, KafkaResponse<List<UserProfileDTO>>> replyTemplate = new
-        ReplyingKafkaTemplate<>(pf, repliesContainer);
+                ReplyingKafkaTemplate<>(pf, repliesContainer);
         replyTemplate.setDefaultReplyTimeout(Duration.ofSeconds(10));
         replyTemplate.setSharedReplyTopic(true);
         return replyTemplate;
@@ -62,7 +62,8 @@ public class UserSearchKafkaConfig {
         containerFactory.setRecordMessageConverter(jsonMessageConverter);
         containerFactory.setConsumerFactory(listConsumerFactory());
         ConcurrentMessageListenerContainer<String, KafkaResponse<List<UserProfileDTO>>> repliesContainer =
-        containerFactory.createContainer("user-search-response");
+                containerFactory.createContainer("user-search-response",
+                        "recommendation-user-response");
         repliesContainer.getContainerProperties().setGroupId("search-reply-group");
         return repliesContainer;
     }

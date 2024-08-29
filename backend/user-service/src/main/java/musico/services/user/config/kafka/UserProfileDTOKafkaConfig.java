@@ -29,7 +29,6 @@ import java.util.Map;
 public class UserProfileDTOKafkaConfig {
     @Value(value = "${spring.kafka.bootstrap-servers}")
     private String bootstrapAddress;
-    private final JsonMessageConverter jsonMessageConverter;
     private final BytesJsonMessageConverter jsonBytesMessageConverter;
 
     @Bean
@@ -58,7 +57,7 @@ public class UserProfileDTOKafkaConfig {
             ProducerFactory<String, UserProfileDTO> pf,
             ConcurrentMessageListenerContainer<String, KafkaResponse<UserProfileDTO>> repliesContainer) {
         ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<UserProfileDTO>> replyTemplate = new
-        ReplyingKafkaTemplate<>(pf, repliesContainer);
+                ReplyingKafkaTemplate<>(pf, repliesContainer);
         replyTemplate.setDefaultReplyTimeout(Duration.ofSeconds(10));
         replyTemplate.setSharedReplyTopic(true);
         return replyTemplate;
@@ -77,12 +76,15 @@ public class UserProfileDTOKafkaConfig {
     }
 
     @Bean
-    public ConcurrentMessageListenerContainer<String,KafkaResponse<UserProfileDTO>> repliesContainerUserProfileDTO(
+    public ConcurrentMessageListenerContainer<String, KafkaResponse<UserProfileDTO>> repliesContainerUserProfileDTO(
             ConcurrentKafkaListenerContainerFactory<String, KafkaResponse<UserProfileDTO>> containerFactory) {
         containerFactory.setRecordMessageConverter(jsonBytesMessageConverter);
         containerFactory.setConsumerFactory(consumerFactoryUserProfileDTO());
-        ConcurrentMessageListenerContainer<String,KafkaResponse<UserProfileDTO>> repliesContainer =
-                containerFactory.createContainer("profile-get-response");
+        ConcurrentMessageListenerContainer<String, KafkaResponse<UserProfileDTO>> repliesContainer =
+                containerFactory.createContainer( "profile-get-response",
+                        "profile-update-response",
+                        "profile-create-response"
+                );
         repliesContainer.getContainerProperties().setGroupId("auth-reply-group");
         return repliesContainer;
     }
@@ -92,7 +94,7 @@ public class UserProfileDTOKafkaConfig {
             ProducerFactory<String, UserProfileDTO> pf,
             ConcurrentMessageListenerContainer<String, KafkaResponse<List<UserProfileDTO>>> repliesContainer) {
         ReplyingKafkaTemplate<String, UserProfileDTO, KafkaResponse<List<UserProfileDTO>>> replyTemplate = new
-        ReplyingKafkaTemplate<>(pf, repliesContainer);
+                ReplyingKafkaTemplate<>(pf, repliesContainer);
         replyTemplate.setDefaultReplyTimeout(Duration.ofSeconds(10));
         replyTemplate.setSharedReplyTopic(true);
         return replyTemplate;

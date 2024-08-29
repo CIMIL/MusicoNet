@@ -1,11 +1,9 @@
 package musico.services.databases.config.kafka;
 
 import lombok.RequiredArgsConstructor;
-import musico.services.databases.models.kafka.MusicalEventDTO;
-import musico.services.databases.models.kafka.MusicalWorkQueryParams;
-import musico.services.databases.models.kafka.UserSearchParams;
-import musico.services.databases.models.kafka.UsersQueryParams;
+import musico.services.databases.models.kafka.*;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.common.serialization.IntegerDeserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,10 +13,12 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @EnableKafka
@@ -30,6 +30,7 @@ public class KafkaConsumerConfig {
 
     private final KafkaTemplate<String, UsersQueryParams> usersQueryParamsTemplate;
     private final KafkaTemplate<String, MusicalEventDTO> musicalEventDTOTemplate;
+    private final KafkaTemplate<String, Integer> genreTemplate;
 
     @Bean
     public ConsumerFactory<String, MusicalWorkQueryParams> musicalWorkQueryParamsConsumerFactory() {
@@ -131,5 +132,21 @@ public class KafkaConsumerConfig {
         factory.setConsumerFactory(musicalEventDTOConsumerFactory());
         factory.setReplyTemplate(musicalEventDTOTemplate);
         return factory;
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String,Integer> genreContainerFactory(){
+        ConcurrentKafkaListenerContainerFactory<String,Integer> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(genreConsumerFactory());
+        factory.setReplyTemplate(genreTemplate);
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String,Integer> genreConsumerFactory(){
+        Map<String, Object> props = new HashMap<>();
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, "databases-service");
+        return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new IntegerDeserializer());
     }
 }

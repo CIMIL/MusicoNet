@@ -56,7 +56,7 @@ public class KafkaProducerConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, MusicalEventDTO> musicalEventDTOTemplate(){
+    public KafkaTemplate<String, MusicalEventDTO> musicalEventDTOTemplate() {
         return new KafkaTemplate<>(musicalEventDTOProducerFactory());
     }
 
@@ -91,15 +91,30 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
     }
 
-   @Bean
-   public ProducerFactory<String, MusicalEventDTO> musicalEventDTOProducerFactory(){
-         Map<String, Object> configProps = new HashMap<>();
-         JsonSerializer<MusicalEventDTO> serializer = new JsonSerializer<>();
-         serializer.setAddTypeInfo(false);
-         configProps.put(
+    @Bean
+    public ProducerFactory<String, MusicalEventDTO> musicalEventDTOProducerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        JsonSerializer<MusicalEventDTO> serializer = new JsonSerializer<>();
+        serializer.setAddTypeInfo(false);
+        configProps.put(
                 ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
                 bootstrapAddress);
-         return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
-   }
+        return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
+    }
 
+    @Bean
+    public ProducerFactory<String, List<String>> genreProducerFactory() {
+        Map<String, Object> configProps = new HashMap<>();
+        JsonSerializer<List<String>> serializer = new JsonSerializer<>();
+        serializer.setAddTypeInfo(false);
+        configProps.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                bootstrapAddress);
+        return new DefaultKafkaProducerFactory<>(configProps, new StringSerializer(), serializer);
+    }
+
+    @Bean
+    public KafkaTemplate<String, List<String>> genreKafkaTemplate() {
+        return new KafkaTemplate<>(genreProducerFactory());
+    }
 }
